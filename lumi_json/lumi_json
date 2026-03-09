@@ -1,0 +1,544 @@
+{
+  "questions": [
+    {
+      "id": "intro_greeting",
+      "type": "microcopy",
+      "microcopy": "Hi, I’m Lumi 👋",
+      "dependsOn": null
+    },
+    {
+      "id": "intro_explanation",
+      "type": "microcopy",
+      "microcopy": "You're not lacking willpower. Most people quit because the plan feels too hard at the start. I'll help you begin with tiny, doable steps across four areas: Workout, Nutrition, Recovery, and Mental Health.",
+      "dependsOn": "intro_greeting"
+    },
+    {
+      "id": "intro_personalize",
+      "type": "microcopy",
+      "microcopy": "Before we start, I'll ask a few quick questions to personalize your plan.",
+      "dependsOn": "intro_explanation"
+    },
+    {
+      "id": "age",
+      "question": "How old are you?",
+      "type": "single-select",
+      "showEvent": "ob_survey_age_show",
+      "contentEvent": "ob_survey_age_content",
+      "contentEventParam": "ob_survey_age_param",
+      "dependsOn": "intro_personalize",
+      "options": [
+        {
+          "value": "Under 18",
+          "key": "UNDER_18",
+          "microcopy": "Got it 😊 I'll keep things safe and simple for you."
+        },
+        {
+          "value": "18-24",
+          "key": "18_24",
+          "microcopy": "Nice, great age to build strong habits. Let's do this!"
+        },
+        {
+          "value": "25-34",
+          "key": "25_34",
+          "microcopy": "Perfect, now we'll make a plan that fits your real schedule."
+        },
+        {
+          "value": "35-44",
+          "key": "35_44",
+          "microcopy": "Love it, steady progress and good recovery will be our focus."
+        },
+        {
+          "value": "45-54",
+          "key": "45_54",
+          "microcopy": "Great, let's focus on strength and staying flexible."
+        },
+        {
+          "value": "55-64",
+          "key": "55_64",
+          "microcopy": "Awesome, gentle but effective is the way to go."
+        },
+        {
+          "value": "65 and over",
+          "key": "65_AND_OVER",
+          "microcopy": "Thank you, I'll keep it very gentle and super easy to follow."
+        }
+      ],
+      "microcopy": "Thanks! This helps me tailor your plan."
+    },
+    {
+      "id": "gender",
+      "question": "What's your gender?",
+      "type": "single-select",
+      "showEvent": "ob_gender_show",
+      "contentEvent": "ob_gender_content",
+      "contentEventParam": "ob_gender_content_param",
+      "dependsOn": "age",
+      "options": [
+        {
+          "value": "Male",
+          "key": "MALE",
+          "microcopy": "Nice let's build a plan that's strong, simple, and consistent."
+        },
+        {
+          "value": "Female",
+          "key": "FEMALE",
+          "microcopy": "Love it 💜 I'll personalize your plan to fit your body and lifestyle."
+        },
+        {
+          "value": "Non-binary",
+          "key": "NON_BINARY",
+          "microcopy": "Awesome, thank you for sharing. I'll tailor everything around your goals."
+        },
+        {
+          "value": "Prefer not to say",
+          "key": "PREFER_NOT_TO_SAY",
+          "microcopy": "Totally fine. We'll focus on your goal and habits to personalize your plan."
+        }
+      ],
+      "microcopy": "Perfect. Let's make this plan feel doable"
+    },
+    {
+      "id": "motivation",
+      "question": "What motivates you most?",
+      "type": "single-select",
+      "showEvent": "ob_motivation_show",
+      "contentEvent": "ob_motivation_content",
+      "contentEventParam": "ob_motivation_content_param",
+      "dependsOn": "gender",
+      "options": [
+        {
+          "value": "Look Better",
+          "emoji": "💖",
+          "microcopy": "Ooh I love the confidence goal 💖 Let's make the change noticeable."
+        },
+        {
+          "value": "Improve Healthier",
+          "emoji": "💪",
+          "microcopy": "Solid choice. Your future self will thank you 💪"
+        },
+        {
+          "value": "Doctor suggestion",
+          "emoji": "🧑‍⚕️",
+          "microcopy": "Good call, let's keep it safe and doctor-friendly 👩‍⚕️"
+        },
+        {
+          "value": "Build good habit",
+          "emoji": "🧘",
+          "microcopy": "That's the real secret 🧘 We'll keep it simple and stickable."
+        },
+        {
+          "value": "Prevent chronic diseases",
+          "emoji": "🙌",
+          "microcopy": "Respect. Long-term health is a strong why 🙌"
+        },
+        {
+          "value": "Stay energized",
+          "emoji": "🥰",
+          "microcopy": "Yes please, more energy, less exhaustion 🥰"
+        }
+      ],
+      "microcopy": "Got it, I'll keep that in mind."
+    },
+    {
+      "id": "avoid_body_parts",
+      "question": "Are body parts that you would like to avoid training?",
+      "type": "multi-select",
+      "showEvent": "ob_avoidarea_show",
+      "contentEvent": "ob_avoidarea_content",
+      "contentEventParam": "ob_avoidarea_content_param",
+      "dependsOn": "motivation",
+      "options": [
+        {
+          "value": "No need to avoid",
+          "emoji": "🙅‍♀️",
+          "key": "NO_NEED_TO_AVOID"
+        },
+        {
+          "value": "Knee",
+          "emoji": "🦵"
+        },
+        {
+          "value": "Back",
+          "emoji": "🧍"
+        },
+        {
+          "value": "Shoulder",
+          "emoji": "🤷‍♀️"
+        },
+        {
+          "value": "Asthma",
+          "emoji": "🫁"
+        },
+        {
+          "value": "Can't do the jumps",
+          "emoji": "🦘"
+        },
+        {
+          "value": "Wrist",
+          "emoji": "💪"
+        },
+        {
+          "value": "Ankle",
+          "emoji": "🦶"
+        }
+      ],
+      "microcopy": "Got it, thanks for telling me. I’ll tailor your plan to keep it comfortable and safe."
+    },
+    {
+      "id": "workout_type",
+      "question": "What type of workout suits you best?",
+      "type": "single-select",
+      "showEvent": "ob_workout_show",
+      "contentEvent": "ob_workout_content",
+      "contentEventParam": "ob_workout_content_param",
+      "dependsOn": "avoid_body_parts",
+      "options": [
+        {
+          "value": "Indoor Walking",
+          "emoji": "👟",
+          "microcopy": "Simple and powerful. Walking works, let's start strong."
+        },
+        {
+          "value": "Chair Workout",
+          "emoji": "🪑",
+          "microcopy": "Great pick safe, steady, and still counts. Proud of you."
+        },
+        {
+          "value": "Pilates",
+          "emoji": "🟦",
+          "microcopy": "Ah, Pilates! Core, posture, control and this will suit you."
+        },
+        {
+          "value": "Couch & Bed Workout",
+          "emoji": "🛏️",
+          "microcopy": "Honestly? That's smart. Low barrier = more consistency."
+        },
+        {
+          "value": "I'm flexible",
+          "emoji": "😜",
+          "microcopy": "Love that energy 😄 I'll switch styles so you don't get bored."
+        }
+      ],
+      "microcopy": "Got it, I'll match workouts to your style."
+    },
+    {
+      "id": "activity_level",
+      "question": "How active are you during the day?",
+      "type": "single-select",
+      "showEvent": "ob_activity_show",
+      "contentEvent": "ob_activity_content",
+      "contentEventParam": "ob_activity_content_param",
+      "dependsOn": "workout_type",
+      "options": [
+        {
+          "value": "I'm on the move most of the day",
+          "emoji": "🏃",
+          "key": "ON_THE_MOVE_MOST",
+          "microcopy": "Okay, you're already ahead. Let's use that momentum."
+        },
+        {
+          "value": "I'm balance being stationary with some movement",
+          "emoji": "🚶",
+          "key": "BALANCE",
+          "microcopy": "Nice, there's room to level up without pushing too hard."
+        },
+        {
+          "value": "I don't move much and want to be more active",
+          "emoji": "🪑",
+          "key": "DONT_MOVE_MUCH",
+          "microcopy": "Proud of you for starting. We'll keep the first steps super easy."
+        },
+        {
+          "value": "I have conditions that limit my movement",
+          "emoji": "🌻",
+          "key": "CONDITIONS_THAT_LIMIT",
+          "microcopy": "Thanks for sharing, I'll keep it gentle and adjust as needed."
+        }
+      ],
+      "microcopy": "Thanks, this helps me set the right intensity."
+    },
+    {
+      "id": "fitness_level",
+      "question": "What's your fitness level?",
+      "type": "single-select",
+      "showEvent": "ob_fitness_show",
+      "contentEvent": "ob_fitness_content",
+      "contentEventParam": "ob_fitness_content_param",
+      "dependsOn": "activity_level",
+      "options": [
+        {
+          "value": "Beginner",
+          "key": "BEGINNER",
+          "microcopy": "That's totally okay. Let's make your first wins easy."
+        },
+        {
+          "value": "Intermediate",
+          "key": "INTERMEDIATE",
+          "microcopy": "Nice. You're past the basics time to sharpen your routine."
+        },
+        {
+          "value": "Advanced",
+          "key": "ADVANCED",
+          "microcopy": "Oh wow 😄 I'll push you the right way, let's go."
+        }
+      ]
+    },
+    {
+      "id": "bmi_intro",
+      "type": "microcopy",
+      "microcopy": "Nice. Next I'll calculate your BMI to keep your target safe.",
+      "dependsOn": "fitness_level"
+    },
+    {
+      "id": "height",
+      "question": "What's your height?",
+      "type": "number-input",
+      "showEvent": "ob_height_show",
+      "contentEvent": "ob_height_content",
+      "contentEventParam": "ob_height_content_param",
+      "dependsOn": "bmi_intro",
+      "storageUnit": "ft",
+      "availableUnits": [
+        {
+          "unit": "ft",
+          "label": "ft",
+          "ratio": 30.48
+        },
+        {
+          "unit": "cm",
+          "label": "cm",
+          "ratio": 1.0
+        }
+      ],
+      "hardRangeMin": 3.93,
+      "hardRangeMax": 6.57,
+      "softRangeMin": 4.6,
+      "softRangeMax": 6.1,
+      "errorMessageInvalid": "Invalid input. Please try again.",
+      "errorMessageRange": "That doesn't look right. Please enter a height between %1$s–%2$s %3$s.",
+      "confirmMessageFormat": "Just to confirm, did you mean %1$s %2$s?"
+    },
+    {
+      "id": "current_weight",
+      "question": "What's your current weight?",
+      "type": "number-input",
+      "showEvent": "ob_weight_show",
+      "contentEvent": "ob_weight_content",
+      "contentEventParam": "ob_weight_content_param",
+      "dependsOn": "height",
+      "storageUnit": "lbs",
+      "availableUnits": [
+        {
+          "unit": "lbs",
+          "label": "lbs",
+          "ratio": 0.453592
+        },
+        {
+          "unit": "kg",
+          "label": "kg",
+          "ratio": 1.0
+        }
+      ],
+      "hardRangeMin": 66,
+      "hardRangeMax": 441,
+      "softRangeMin": 88,
+      "softRangeMax": 330,
+      "errorMessageInvalid": "Invalid input. Please try again.",
+      "errorMessageRange": "That doesn't look right. Please enter a weight between %1$s–%2$s %3$s.",
+      "confirmMessageFormat": "Just to confirm, did you mean %1$s %2$s?"
+    },
+    {
+      "id": "target_weight",
+      "question": "What's your target weight?",
+      "type": "number-input",
+      "showEvent": "ob_targetweight_show",
+      "contentEvent": "ob_targetweight_content",
+      "contentEventParam": "ob_targetweight_content_param",
+      "dependsOn": "current_weight",
+      "storageUnit": "lbs",
+      "availableUnits": [
+        {
+          "unit": "lbs",
+          "label": "lbs",
+          "ratio": 0.453592
+        },
+        {
+          "unit": "kg",
+          "label": "kg",
+          "ratio": 1.0
+        }
+      ],
+      "hardRangeMin": 66,
+      "hardRangeMax": 441,
+      "softRangeMin": 88,
+      "softRangeMax": 330,
+      "errorMessageInvalid": "Invalid input. Please try again.",
+      "errorMessageRange": "That doesn't look right. Please enter a weight between %1$s–%2$s %3$s.",
+      "confirmMessageFormat": "Just to confirm, did you mean %1$s %2$s?",
+      "bmiGotItFormat": "Got it ✅ Based on your height and weight, your BMI is %1$s.",
+      "bmiMessageUnderweight": "Instead of losing weight, I recommend we focus on building strength + energy. I'll set you a gentle plan with easy workouts, recovery, and nutrition support. A healthy target is to stay within the healthy weight range for your height.",
+      "bmiMessageHealthy": "Great. The best move now is to stay consistent: short workouts, balanced meals, and good sleep. If you want to lean down a little, we'll keep it gentle so you still stay in a healthy range.",
+      "bmiMessageOverweight": "No worries we'll keep it realistic. I'll build you a gentle plan you can actually stick with 💛"
+    },
+    {
+      "id": "sleep_duration",
+      "question": "How long do you usually sleep at night?",
+      "type": "single-select",
+      "showEvent": "ob_sleep_show",
+      "contentEvent": "ob_sleep_content",
+      "contentEventParam": "ob_sleep_content_param",
+      "dependsOn": "target_weight",
+      "options": [
+        {
+          "value": "Less than 5 hours",
+          "emoji": "😴",
+          "microcopy": "That's rough no worries, we'll start easy and protect your energy."
+        },
+        {
+          "value": "5-7 hours",
+          "emoji": "🛏️",
+          "microcopy": "Okay, decent. A little more sleep would boost your results."
+        },
+        {
+          "value": "7-9 hours",
+          "emoji": "🌙",
+          "microcopy": "Perfect. Your recovery is in a great place."
+        },
+        {
+          "value": "More than 9 hours",
+          "emoji": "☀️",
+          "microcopy": "Wow, that's a lot. Do you usually feel rested when you wake up?"
+        }
+      ],
+      "microcopy": "Thanks, sleep really affects energy and cravings."
+    },
+    {
+      "id": "wake_up_ease",
+      "question": "How easy is it for you to get out of bed?",
+      "type": "single-select",
+      "showEvent": "ob_get_bed_show",
+      "contentEvent": "ob_get_bed_content",
+      "contentEventParam": "ob_get_bed_content_param",
+      "dependsOn": "sleep_duration",
+      "options": [
+        {
+          "value": "Very easy, I get up pretty quickly",
+          "emoji": "😀",
+          "microcopy": "Nice, morning momentum is a superpower."
+        },
+        {
+          "value": "Sometimes easy, some days can be hard",
+          "emoji": "😐",
+          "microcopy": "I get it. We'll make the tough mornings easier."
+        },
+        {
+          "value": "Hard, I often struggle to get out of bed",
+          "emoji": "😫",
+          "microcopy": "You're not alone. Let's take it slow and build your energy back."
+        }
+      ],
+      "microcopy": "Thanks for sharing."
+    },
+    {
+      "id": "diet_history",
+      "question": "Have you tried dieting but didn't see results or gained it back?",
+      "type": "single-select",
+      "showEvent": "ob_diet_show",
+      "contentEvent": "ob_diet_content",
+      "contentEventParam": "diet_content_param",
+      "dependsOn": "wake_up_ease",
+      "options": [
+        {
+          "value": "Yes, dieting didn't help",
+          "emoji": "🙂",
+          "microcopy": "Ugh, that's discouraging. Let's try something that finally feels workable."
+        },
+        {
+          "value": "I gained the weight back",
+          "emoji": "😥",
+          "microcopy": "Totally normal, your body wasn't \"wrong.\" We'll make it easier to maintain."
+        },
+        {
+          "value": "I haven't dieted recently",
+          "emoji": "🤔",
+          "microcopy": "Honestly, that's great. We'll start fresh with small, steady changes."
+        }
+      ],
+      "microcopy": "Thanks for sharing, we'll focus on what's sustainable"
+    },
+    {
+      "id": "aging_perception",
+      "question": "Do you feel like your body is aging faster than it should?",
+      "type": "single-select",
+      "showEvent": "ob_aging_show",
+      "contentEvent": "ob_aging_content",
+      "contentEventParam": "aging_content_param",
+      "dependsOn": "diet_history",
+      "options": [
+        {
+          "value": "Yes - I feel slower, heavier, or weaker than I used to",
+          "emoji": "😣",
+          "key": "1"
+        },
+        {
+          "value": "Sometimes - depends on the day",
+          "emoji": "😮‍💨",
+          "key": "2"
+        },
+        {
+          "value": "No - I feel my age or younger",
+          "emoji": "😌",
+          "key": "3"
+        }
+      ]
+    },
+    {
+      "id": "reversible_info",
+      "type": "info",
+      "showEvent": "ob_reversible_show",
+      "contentEvent": "ob_reversible_content",
+      "contentEventParam": "ob_reversible_content_param",
+      "dependsOn": "aging_perception",
+      "conditionalContent": {
+        "1": {
+          "text": "It's not your fault. It's not aging. It's biology - and it's reversible.\nLet's find out what's really going on.",
+          "image": "img_ob_reversible"
+        },
+        "2": {
+          "text": "Inconsistency is a signal. It's biology - and it's reversible.\nWe'll help you uncover what throws your body off - and stabilize it.",
+          "image": "img_ob_reversible"
+        },
+        "3": {
+          "text": "That's great - your biology is working with you.\nLet's optimize what you already have and help you stay ahead.",
+          "image": "img_ob_reversible"
+        }
+      }
+    },
+    {
+      "id": "main_goal",
+      "question": "What is your biggest motivation right now?",
+      "type": "single-select",
+      "showEvent": "ob_main_goal_show",
+      "contentEvent": "ob_main_goal_content",
+      "contentEventParam": "ob_main_goal_content_param",
+      "dependsOn": "reversible_info",
+      "options": [
+        {
+          "value": "Lose Fat",
+          "key": "LOSE_FAT",
+          "microcopy": "Good pick. We'll keep it doable starting with a few key habits."
+        },
+        {
+          "value": "Improve Healthier",
+          "key": "IMPROVE_HEALTHIER",
+          "microcopy": "Love that mindset. I'm pulling your best daily habits together now."
+        },
+        {
+          "value": "Gain Muscle",
+          "key": "GAIN_MUSCLE",
+          "microcopy": "Let's go 💪 I'm lining up your habit routine to support muscle growth."
+        }
+      ]
+    }
+  ]
+}

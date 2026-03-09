@@ -1,0 +1,207 @@
+# Lumi Chat Questions JSON — Quy tắc chỉnh sửa
+
+Quy tắc khi chỉnh sửa `lumi_chat_questions.json` (và các bản dịch) qua Remote Config hoặc local.
+
+---
+
+## Trường chung (áp dụng cho mọi câu hỏi)
+
+| Trường | Sửa được? | Ghi chú |
+|--------|:---------:|---------|
+| `id` | KHÔNG | Đã hardcode trong `LumiQuestionIds`, dùng cho logic mapping (BMI, onboarding state...) |
+| `type` | KHÔNG | Quyết định loại UI: `single-select`, `multi-select`, `number-input`, `info`, `microcopy` |
+| `dependsOn` | KHÔNG | Điều khiển thứ tự câu hỏi và luồng hiển thị |
+| `showEvent` | KHÔNG | Tên event analytics — đổi sẽ mất dữ liệu tracking |
+| `contentEvent` | KHÔNG | Tên event analytics |
+| `contentEventParam` | KHÔNG | Tên param analytics |
+
+---
+
+## Trường được sửa tự do (chỉ ảnh hưởng hiển thị)
+
+| Trường | Áp dụng cho | Mô tả |
+|--------|------------|-------|
+| `question` | select, number-input | Nội dung câu hỏi hiển thị cho user |
+| `microcopy` (cấp question) | tất cả | Tin nhắn bot phản hồi sau khi user trả lời |
+| `options[].value` | select | Text hiển thị trên option chip |
+| `options[].emoji` | select | Emoji hiển thị bên cạnh option |
+| `options[].microcopy` | select | Phản hồi bot riêng cho từng option |
+| `conditionalContent[].text` | info | Nội dung text trên info card |
+| `conditionalContent[].image` | info | URL ảnh hoặc local drawable key |
+| `errorMessageInvalid` | number-input | Thông báo lỗi khi nhập sai định dạng |
+| `errorMessageRange` | number-input | Thông báo lỗi khi ngoài khoảng. Hỗ trợ placeholder `%1$s`, `%2$s`, `%3$s` |
+| `confirmMessageFormat` | number-input | Tin nhắn xác nhận giá trị. Hỗ trợ placeholder `%1$s`, `%2$s` |
+| `bmiGotItFormat` | chỉ target_weight | Tin nhắn kết quả BMI. Hỗ trợ placeholder `%1$s` |
+| `bmiMessageUnderweight` | chỉ target_weight | Tin nhắn khi BMI thiếu cân |
+| `bmiMessageHealthy` | chỉ target_weight | Tin nhắn khi BMI bình thường |
+| `bmiMessageOverweight` | chỉ target_weight | Tin nhắn khi BMI thừa cân |
+
+---
+
+## Trường sửa cẩn thận
+
+| Trường | Mức rủi ro | Chi tiết |
+|--------|:----------:|---------|
+| `options[].key` | CAO | Được map trong `LumiOnboardingMapper` sang onboarding state. Phải khớp giá trị mong đợi: `MALE`/`FEMALE`, `BEGINNER`/`INTERMEDIATE`/`ADVANCED`, `LOSE_FAT`/`GAIN_MUSCLE`/`IMPROVE_HEALTHIER`... |
+| `hardRangeMin` / `hardRangeMax` | TRUNG BÌNH | Giới hạn validation cứng cho number-input. Input ngoài khoảng này bị từ chối |
+| `softRangeMin` / `softRangeMax` | TRUNG BÌNH | Giới hạn validation mềm — hiện confirm prompt. Phải nằm trong hardRange |
+| `storageUnit` | CAO | Đơn vị gốc dùng để tính toán (BMI, chuyển đổi cân nặng). Đổi sẽ sai phép tính |
+| `availableUnits[].unit` | CAO | Định danh đơn vị dùng trong logic chuyển đổi |
+| `availableUnits[].label` | THẤP | Chỉ là label hiển thị — đổi an toàn |
+| `availableUnits[].ratio` | CAO | Tỷ lệ chuyển đổi sang đơn vị gốc (cm/kg). Sai giá trị = sai BMI/cân nặng |
+| `conditionalContent` keys | CAO | Phải khớp với `options[].key` của câu hỏi `dependsOn` (vd: `"1"`, `"2"`, `"3"` từ `aging_perception`) |
+
+---
+
+## Quy tắc thêm / xoá câu hỏi
+
+### Câu KHÔNG ĐƯỢC XOÁ (hardcode trong code)
+
+Các câu sau có `id` được hardcode trong `LumiQuestionIds`, `LumiOnboardingMapper`, và `LumiViewModel`. Xoá sẽ gây crash hoặc mất logic onboarding:
+
+| id | Lý do không được xoá |
+|----|----------------------|
+| `age` | Map sang năm sinh (`calculateBirthYearFromAge`) |
+| `gender` | Map sang giới tính (`mapGenderAnswer`) |
+| `motivation` | Lưu motivation vào onboarding state |
+| `avoid_body_parts` | Lưu danh sách vùng cơ thể cần tránh |
+| `workout_type` | Lưu loại workout |
+| `activity_level` | Map sang activity level int (`mapActivityLevel`) |
+| `fitness_level` | Map sang fitness level int (`mapFitnessLevel`) |
+| `height` | Dùng để tính BMI + map sang `currentHeight` |
+| `current_weight` | Dùng để tính BMI + map sang `currentWeight` |
+| `target_weight` | Dùng để tính BMI + map sang `targetWeight`. Kích hoạt hiển thị kết quả BMI |
+| `aging_perception` | Map sang `beforeReversibleAnswerIndex`, keys liên kết với `reversible_info` |
+| `reversible_info` | Hiển thị info card dựa trên `aging_perception`. Logic trong `showInfoQuestionIfNeeded()` |
+| `main_goal` | Map sang main goal (`mapMainGoalAnswer`). Kết thúc luồng onboarding → chuyển màn hình |
+
+### Câu CÓ THỂ XOÁ (chỉ mang tính hiển thị)
+
+| id | Ghi chú |
+|----|---------|
+| `intro_greeting` | Microcopy chào hỏi — xoá thì cần cập nhật `dependsOn` của câu tiếp theo |
+| `intro_explanation` | Microcopy giải thích — tương tự |
+| `intro_personalize` | Microcopy giới thiệu — tương tự |
+| `bmi_intro` | Microcopy trước phần BMI — tương tự |
+| `sleep_duration` | Không map sang onboarding state |
+| `wake_up_ease` | Không map sang onboarding state |
+| `diet_history` | Không map sang onboarding state |
+
+**Lưu ý khi xoá:** Phải cập nhật `dependsOn` của câu ngay sau câu bị xoá để trỏ sang câu trước đó. Ví dụ xoá `bmi_intro` thì `height.dependsOn` phải đổi từ `"bmi_intro"` sang `"fitness_level"`.
+
+### Quy tắc THÊM câu hỏi mới
+
+1. **Type hỗ trợ:** `microcopy`, `single-select`, `multi-select`, `number-input`, `info`
+
+2. **Trường bắt buộc:**
+   - `id` — duy nhất, không trùng câu khác
+   - `type` — một trong các type ở trên
+   - `dependsOn` — trỏ tới `id` của câu trước đó (hoặc `null` nếu là câu đầu tiên)
+
+3. **Nối chuỗi `dependsOn`:** Câu mới phải được chèn vào đúng vị trí trong chuỗi. Câu ngay sau cũng cần cập nhật `dependsOn` trỏ sang câu mới.
+   - Ví dụ thêm câu `"stress_level"` giữa `wake_up_ease` và `diet_history`:
+     - `stress_level.dependsOn` = `"wake_up_ease"`
+     - `diet_history.dependsOn` đổi từ `"wake_up_ease"` sang `"stress_level"`
+
+4. **Câu mới có cần map sang onboarding state không?**
+   - Nếu KHÔNG (chỉ hiển thị): thêm JSON là đủ, không cần sửa code
+   - Nếu CÓ: phải thêm case mới trong `LumiQuestionIds`, `LumiOnboardingMapper.createUpdateBlock()`, và các chỗ liên quan trong `LumiViewModel`
+
+5. **Thêm option cho câu có sẵn:**
+   - Nếu câu hỏi dùng `key` để map logic → option mới phải có `key` hợp lệ và thêm xử lý trong mapper
+   - Nếu câu hỏi không dùng `key` (vd: `motivation`, `sleep_duration`) → thêm option tự do
+
+---
+
+## Validation tự động (fallback về local khi fail)
+
+Khi nhận JSON từ Remote Config, app sẽ validate trước khi sử dụng. Nếu bất kỳ rule nào fail → **bỏ qua remote JSON và dùng file local mặc định**.
+
+Xem implementation tại `LumiViewModel.validateQuestions()`.
+
+| # | Rule | Mô tả | Ví dụ lỗi |
+|---|------|-------|-----------|
+| 1 | Danh sách rỗng | `questions` không được rỗng | `"questions": []` |
+| 2 | Trùng `id` | Mỗi câu phải có `id` duy nhất | 2 câu cùng `"id": "age"` |
+| 3 | Thiếu câu bắt buộc | Phải có đủ 13 câu hardcode (xem bảng ở trên) | Thiếu `height` hoặc `main_goal` |
+| 4 | `type` không hợp lệ | Phải là: `single-select`, `multi-select`, `number-input`, `info`, `microcopy` | `"type": "checkbox"` |
+| 5 | `dependsOn` trỏ sai | `dependsOn` phải trỏ tới `id` tồn tại trong danh sách | `"dependsOn": "xyz"` (không có câu nào id = xyz) |
+| 6 | Vòng lặp `dependsOn` | Chuỗi `dependsOn` không được tạo chu trình | `A.dependsOn = B`, `B.dependsOn = A` |
+| 7 | Câu select thiếu options | `single-select` / `multi-select` phải có ít nhất 1 option | `"options": []` hoặc không có trường `options` |
+| 8 | Câu measurement thiếu đơn vị | `height`, `current_weight`, `target_weight` phải có `storageUnit` và `availableUnits` | `height` không có `availableUnits` |
+| 9 | `ratio = 0` | `availableUnits[].ratio` không được bằng 0 (gây chia cho 0 khi chuyển đổi đơn vị) | `"ratio": 0` |
+| 10 | `hardRangeMin > hardRangeMax` | Giới hạn cứng phải hợp lệ: min ≤ max | `hardRangeMin: 500, hardRangeMax: 100` |
+| 11 | `softRange` ngoài `hardRange` | `softRangeMin` ≥ `hardRangeMin` và `softRangeMax` ≤ `hardRangeMax` | `softRangeMin: 50` nhưng `hardRangeMin: 66` |
+| 12 | `conditionalContent` keys không khớp | Keys trong `reversible_info.conditionalContent` phải khớp với `aging_perception.options[].key` | `aging_perception` có key `"1","2","3"` nhưng `conditionalContent` chỉ có `"1","2"` |
+
+---
+
+## Chi tiết từng câu hỏi
+
+### `intro_greeting`, `intro_explanation`, `intro_personalize`, `bmi_intro` (type: microcopy)
+- Sửa được: `microcopy`
+- Không đổi: `id`, `type`, `dependsOn`
+
+### `age` (type: single-select)
+- Sửa được: `question`, `microcopy`, `options[].value`, `options[].microcopy`
+- Cẩn thận: `options[].key` — map sang năm sinh trong `calculateBirthYearFromAge()`
+
+### `gender` (type: single-select)
+- Sửa được: `question`, `microcopy`, `options[].value`, `options[].microcopy`
+- Cẩn thận: `options[].key` — map sang giới tính trong `mapGenderAnswer()`
+
+### `motivation` (type: single-select)
+- Sửa được: `question`, `microcopy`, `options[].value`, `options[].emoji`, `options[].microcopy`
+- Lưu ý: Không có trường `key` — `value` được lưu trực tiếp
+
+### `avoid_body_parts` (type: multi-select)
+- Sửa được: `question`, `microcopy`, `options[].value`, `options[].emoji`
+- Cẩn thận: `options[].key` = `"NO_NEED_TO_AVOID"` được check trong code
+
+### `workout_type` (type: single-select)
+- Sửa được: `question`, `microcopy`, `options[].value`, `options[].emoji`, `options[].microcopy`
+- Lưu ý: `value` được lưu trực tiếp làm `typeOfWorkout`
+
+### `activity_level` (type: single-select)
+- Sửa được: `question`, `microcopy`, `options[].value`, `options[].emoji`, `options[].microcopy`
+- Cẩn thận: `options[].key` — map sang activity level int trong `mapActivityLevel()`
+
+### `fitness_level` (type: single-select)
+- Sửa được: `question`, `microcopy`, `options[].value`, `options[].microcopy`
+- Cẩn thận: `options[].key` — map sang fitness level int trong `mapFitnessLevel()`
+
+### `height` (type: number-input)
+- Sửa được: `question`, `errorMessageInvalid`, `errorMessageRange`, `confirmMessageFormat`
+- Cẩn thận: `hardRange*`, `softRange*`, `storageUnit`, `availableUnits`
+
+### `current_weight` (type: number-input)
+- Sửa được: `question`, `errorMessageInvalid`, `errorMessageRange`, `confirmMessageFormat`
+- Cẩn thận: `hardRange*`, `softRange*`, `storageUnit`, `availableUnits`
+
+### `target_weight` (type: number-input)
+- Sửa được: `question`, `errorMessageInvalid`, `errorMessageRange`, `confirmMessageFormat`, `bmiGotItFormat`, `bmiMessage*`
+- Cẩn thận: `hardRange*`, `softRange*`, `storageUnit`, `availableUnits`
+
+### `sleep_duration` (type: single-select)
+- Sửa được: `question`, `microcopy`, `options[].value`, `options[].emoji`, `options[].microcopy`
+- Lưu ý: Câu trả lời không map sang onboarding state — chỉ mang tính thông tin
+
+### `wake_up_ease` (type: single-select)
+- Sửa được: `question`, `microcopy`, `options[].value`, `options[].emoji`, `options[].microcopy`
+- Lưu ý: Câu trả lời không map sang onboarding state — chỉ mang tính thông tin
+
+### `diet_history` (type: single-select)
+- Sửa được: `question`, `microcopy`, `options[].value`, `options[].emoji`, `options[].microcopy`
+- Lưu ý: Câu trả lời không map sang onboarding state — chỉ mang tính thông tin
+
+### `aging_perception` (type: single-select)
+- Sửa được: `question`, `options[].value`, `options[].emoji`
+- Cẩn thận: `options[].key` (`"1"`, `"2"`, `"3"`) — phải khớp với keys trong `conditionalContent` của `reversible_info`
+
+### `reversible_info` (type: info)
+- Sửa được: `conditionalContent[].text`, `conditionalContent[].image`
+- Cẩn thận: Keys của `conditionalContent` phải khớp với `options[].key` của `aging_perception`
+
+### `main_goal` (type: single-select)
+- Sửa được: `question`, `options[].value`, `options[].microcopy`
+- Cẩn thận: `options[].key` — map sang main goal trong `mapMainGoalAnswer()`
