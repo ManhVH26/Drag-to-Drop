@@ -30,7 +30,7 @@ export const DEFAULT_QUESTIONS: Question[] = [
     contentEventParam: "ob_survey_age_param",
     dependsOn: "intro_personalize",
     options: [
-      { value: "Under 18", key: "UNDER_18", microcopy: "Got it \ud83d\ude0a I'll keep things safe and simple for you." },
+      { value: "Under 18", key: "UNDER_18", microcopy: "Got it! I'll keep things safe and simple for you." },
       { value: "18-24", key: "18_24", microcopy: "Nice, great age to build strong habits. Let's do this!" },
       { value: "25-34", key: "25_34", microcopy: "Perfect, now we'll make a plan that fits your real schedule." },
       { value: "35-44", key: "35_44", microcopy: "Love it, steady progress and good recovery will be our focus." },
@@ -50,7 +50,7 @@ export const DEFAULT_QUESTIONS: Question[] = [
     dependsOn: "age",
     options: [
       { value: "Male", key: "MALE", microcopy: "Nice let's build a plan that's strong, simple, and consistent." },
-      { value: "Female", key: "FEMALE", microcopy: "Love it \ud83d\udc9c I'll personalize your plan to fit your body and lifestyle." },
+      { value: "Female", key: "FEMALE", microcopy: "Love it! I'll personalize your plan to fit your body and lifestyle." },
       { value: "Non-binary", key: "NON_BINARY", microcopy: "Awesome, thank you for sharing. I'll tailor everything around your goals." },
       { value: "Prefer not to say", key: "PREFER_NOT_TO_SAY", microcopy: "Totally fine. We'll focus on your goal and habits to personalize your plan." },
     ],
@@ -65,12 +65,12 @@ export const DEFAULT_QUESTIONS: Question[] = [
     contentEventParam: "ob_motivation_content_param",
     dependsOn: "gender",
     options: [
-      { value: "Look Better", emoji: "\ud83d\udc96", microcopy: "Ooh I love the confidence goal \ud83d\udc96 Let's make the change noticeable." },
-      { value: "Improve Healthier", emoji: "\ud83d\udcaa", microcopy: "Solid choice. Your future self will thank you \ud83d\udcaa" },
-      { value: "Doctor suggestion", emoji: "\ud83e\uddd1\u200d\u2695\ufe0f", microcopy: "Good call, let's keep it safe and doctor-friendly \ud83d\udc69\u200d\u2695\ufe0f" },
-      { value: "Build good habit", emoji: "\ud83e\uddd8", microcopy: "That's the real secret \ud83e\uddd8 We'll keep it simple and stickable." },
-      { value: "Prevent chronic diseases", emoji: "\ud83d\ude4c", microcopy: "Respect. Long-term health is a strong why \ud83d\ude4c" },
-      { value: "Stay energized", emoji: "\ud83e\udd70", microcopy: "Yes please, more energy, less exhaustion \ud83e\udd70" },
+      { value: "Look Better", emoji: "\ud83d\udc96", microcopy: "Ooh I love the confidence goal! Let's make the change noticeable." },
+      { value: "Improve Healthier", emoji: "\ud83d\udcaa", microcopy: "Solid choice. Your future self will thank you!" },
+      { value: "Doctor suggestion", emoji: "\ud83e\uddd1\u200d\u2695\ufe0f", microcopy: "Good call, let's keep it safe and doctor-friendly." },
+      { value: "Build good habit", emoji: "\ud83e\uddd8", microcopy: "That's the real secret. We'll keep it simple and stickable." },
+      { value: "Prevent chronic diseases", emoji: "\ud83d\ude4c", microcopy: "Respect. Long-term health is a strong why!" },
+      { value: "Stay energized", emoji: "\ud83e\udd70", microcopy: "Yes please, more energy, less exhaustion!" },
     ],
     microcopy: "Got it, I'll keep that in mind.",
   },
@@ -107,7 +107,7 @@ export const DEFAULT_QUESTIONS: Question[] = [
       { value: "Chair Workout", emoji: "\ud83e\ude91", microcopy: "Great pick safe, steady, and still counts. Proud of you." },
       { value: "Pilates", emoji: "\ud83d\udfe6", microcopy: "Ah, Pilates! Core, posture, control and this will suit you." },
       { value: "Couch & Bed Workout", emoji: "\ud83d\udecf\ufe0f", microcopy: "Honestly? That's smart. Low barrier = more consistency." },
-      { value: "I'm flexible", emoji: "\ud83d\ude1c", microcopy: "Love that energy \ud83d\ude04 I'll switch styles so you don't get bored." },
+      { value: "I'm flexible", emoji: "\ud83d\ude1c", microcopy: "Love that energy! I'll switch styles so you don't get bored." },
     ],
     microcopy: "Got it, I'll match workouts to your style.",
   },
@@ -138,7 +138,7 @@ export const DEFAULT_QUESTIONS: Question[] = [
     options: [
       { value: "Beginner", key: "BEGINNER", microcopy: "That's totally okay. Let's make your first wins easy." },
       { value: "Intermediate", key: "INTERMEDIATE", microcopy: "Nice. You're past the basics time to sharpen your routine." },
-      { value: "Advanced", key: "ADVANCED", microcopy: "Oh wow \ud83d\ude04 I'll push you the right way, let's go." },
+      { value: "Advanced", key: "ADVANCED", microcopy: "Oh wow! I'll push you the right way, let's go." },
     ],
   },
   {
@@ -165,7 +165,7 @@ export const DEFAULT_QUESTIONS: Question[] = [
     softRangeMin: 4.6,
     softRangeMax: 6.1,
     errorMessageInvalid: "Invalid input. Please try again.",
-    errorMessageRange: "That doesn't look right. Please enter a height between %1$s\u2013%2$s %3$s.",
+    errorMessageRange: "That doesn't look right. Please enter a height between %1$s-%2$s %3$s.",
     confirmMessageFormat: "Just to confirm, did you mean %1$s %2$s?",
   },
   {
@@ -186,7 +186,7 @@ export const DEFAULT_QUESTIONS: Question[] = [
     softRangeMin: 88,
     softRangeMax: 330,
     errorMessageInvalid: "Invalid input. Please try again.",
-    errorMessageRange: "That doesn't look right. Please enter a weight between %1$s\u2013%2$s %3$s.",
+    errorMessageRange: "That doesn't look right. Please enter a weight between %1$s-%2$s %3$s.",
     confirmMessageFormat: "Just to confirm, did you mean %1$s %2$s?",
   },
   {
@@ -207,12 +207,12 @@ export const DEFAULT_QUESTIONS: Question[] = [
     softRangeMin: 88,
     softRangeMax: 330,
     errorMessageInvalid: "Invalid input. Please try again.",
-    errorMessageRange: "That doesn't look right. Please enter a weight between %1$s\u2013%2$s %3$s.",
+    errorMessageRange: "That doesn't look right. Please enter a weight between %1$s-%2$s %3$s.",
     confirmMessageFormat: "Just to confirm, did you mean %1$s %2$s?",
-    bmiGotItFormat: "Got it \u2705 Based on your height and weight, your BMI is %1$s.",
+    bmiGotItFormat: "Got it! Based on your height and weight, your BMI is %1$s.",
     bmiMessageUnderweight: "Instead of losing weight, I recommend we focus on building strength + energy. I'll set you a gentle plan with easy workouts, recovery, and nutrition support. A healthy target is to stay within the healthy weight range for your height.",
     bmiMessageHealthy: "Great. The best move now is to stay consistent: short workouts, balanced meals, and good sleep. If you want to lean down a little, we'll keep it gentle so you still stay in a healthy range.",
-    bmiMessageOverweight: "No worries we'll keep it realistic. I'll build you a gentle plan you can actually stick with \ud83d\udc9b",
+    bmiMessageOverweight: "No worries we'll keep it realistic. I'll build you a gentle plan you can actually stick with!",
   },
   {
     id: "sleep_duration",
@@ -307,7 +307,7 @@ export const DEFAULT_QUESTIONS: Question[] = [
     options: [
       { value: "Lose Fat", key: "LOSE_FAT", microcopy: "Good pick. We'll keep it doable starting with a few key habits." },
       { value: "Improve Healthier", key: "IMPROVE_HEALTHIER", microcopy: "Love that mindset. I'm pulling your best daily habits together now." },
-      { value: "Gain Muscle", key: "GAIN_MUSCLE", microcopy: "Let's go \ud83d\udcaa I'm lining up your habit routine to support muscle growth." },
+      { value: "Gain Muscle", key: "GAIN_MUSCLE", microcopy: "Let's go! I'm lining up your habit routine to support muscle growth." },
     ],
   },
 ];
