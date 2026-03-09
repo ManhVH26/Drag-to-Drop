@@ -16,9 +16,6 @@ export default function QuestionEditModal({ question, onSave, onClose }: Props) 
   const set = <K extends keyof Question>(key: K, val: Question[K]) =>
     setDraft((d) => ({ ...d, [key]: val }));
 
-  const isNonEditable = (field: string) =>
-    (NON_EDITABLE_FIELDS as readonly string[]).includes(field);
-
   const updateOption = (idx: number, updates: Partial<Option>) => {
     const opts = [...(draft.options || [])];
     opts[idx] = { ...opts[idx], ...updates };

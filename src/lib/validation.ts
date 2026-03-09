@@ -6,7 +6,7 @@ export function validateQuestions(questions: Question[]): ValidationError[] {
 
   // Rule 1: Empty list
   if (questions.length === 0) {
-    errors.push({ ruleNumber: 1, message: "Danh sách câu hỏi không được rỗng" });
+    errors.push({ ruleNumber: 1, message: "Danh sach cau hoi khong duoc rong" });
     return errors;
   }
 
@@ -15,7 +15,7 @@ export function validateQuestions(questions: Question[]): ValidationError[] {
   const seen = new Set<string>();
   for (const id of ids) {
     if (seen.has(id)) {
-      errors.push({ ruleNumber: 2, questionId: id, message: `Trùng id "${id}"` });
+      errors.push({ ruleNumber: 2, questionId: id, message: `Trung id "${id}"` });
     }
     seen.add(id);
   }
@@ -23,14 +23,14 @@ export function validateQuestions(questions: Question[]): ValidationError[] {
   // Rule 3: Missing required questions
   for (const reqId of REQUIRED_QUESTION_IDS) {
     if (!ids.includes(reqId)) {
-      errors.push({ ruleNumber: 3, questionId: reqId, message: `Thiếu câu bắt buộc "${reqId}"` });
+      errors.push({ ruleNumber: 3, questionId: reqId, message: `Thieu cau bat buoc "${reqId}"` });
     }
   }
 
   // Rule 4: Invalid type
   for (const q of questions) {
     if (!(QUESTION_TYPES as readonly string[]).includes(q.type)) {
-      errors.push({ ruleNumber: 4, questionId: q.id, message: `Type không hợp lệ: "${q.type}"` });
+      errors.push({ ruleNumber: 4, questionId: q.id, message: `Type khong hop le: "${q.type}"` });
     }
   }
 
@@ -41,7 +41,7 @@ export function validateQuestions(questions: Question[]): ValidationError[] {
       errors.push({
         ruleNumber: 5,
         questionId: q.id,
-        message: `dependsOn trỏ tới "${q.dependsOn}" không tồn tại`,
+        message: `dependsOn tro toi "${q.dependsOn}" khong ton tai`,
       });
     }
   }
@@ -56,7 +56,7 @@ export function validateQuestions(questions: Question[]): ValidationError[] {
         errors.push({
           ruleNumber: 6,
           questionId: q.id,
-          message: `Phát hiện vòng lặp dependsOn tại "${q.id}"`,
+          message: `Phat hien vong lap dependsOn tai "${q.id}"`,
         });
         break;
       }
@@ -71,7 +71,7 @@ export function validateQuestions(questions: Question[]): ValidationError[] {
       errors.push({
         ruleNumber: 7,
         questionId: q.id,
-        message: `Câu "${q.id}" (${q.type}) cần ít nhất 1 option`,
+        message: `Cau "${q.id}" (${q.type}) can it nhat 1 option`,
       });
     }
   }
@@ -83,7 +83,7 @@ export function validateQuestions(questions: Question[]): ValidationError[] {
         errors.push({
           ruleNumber: 8,
           questionId: q.id,
-          message: `Câu "${q.id}" cần có storageUnit và availableUnits`,
+          message: `Cau "${q.id}" can co storageUnit va availableUnits`,
         });
       }
     }
@@ -97,7 +97,7 @@ export function validateQuestions(questions: Question[]): ValidationError[] {
           errors.push({
             ruleNumber: 9,
             questionId: q.id,
-            message: `Unit "${u.unit}" trong "${q.id}" có ratio = 0 (gây chia cho 0)`,
+            message: `Unit "${u.unit}" trong "${q.id}" co ratio = 0 (gay chia cho 0)`,
           });
         }
       }
@@ -144,7 +144,7 @@ export function validateQuestions(questions: Question[]): ValidationError[] {
         errors.push({
           ruleNumber: 12,
           questionId: "reversible_info",
-          message: `conditionalContent thiếu key "${k}" (từ aging_perception options)`,
+          message: `conditionalContent thieu key "${k}" (tu aging_perception options)`,
         });
       }
     }
@@ -153,7 +153,7 @@ export function validateQuestions(questions: Question[]): ValidationError[] {
         errors.push({
           ruleNumber: 12,
           questionId: "reversible_info",
-          message: `conditionalContent có key "${k}" nhưng không có trong aging_perception options`,
+          message: `conditionalContent co key "${k}" nhung khong co trong aging_perception options`,
         });
       }
     }
