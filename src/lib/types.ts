@@ -2,25 +2,20 @@ export type QuestionType =
   | "microcopy"
   | "single-select"
   | "multi-select"
-  | "number-input"
-  | "info";
+  | "number-input";
 
 export interface Option {
   value: string;
   key?: string;
   emoji?: string;
   microcopy?: string;
+  microcopyImage?: string;
 }
 
 export interface AvailableUnit {
   unit: string;
   label: string;
   ratio: number;
-}
-
-export interface ConditionalContentEntry {
-  text: string;
-  image: string;
 }
 
 export interface Question {
@@ -32,6 +27,9 @@ export interface Question {
   showEvent?: string;
   contentEvent?: string;
   contentEventParam?: string;
+  infoShowEvent?: string;
+  infoContentEvent?: string;
+  infoContentEventParam?: string;
   options?: Option[];
   storageUnit?: string;
   availableUnits?: AvailableUnit[];
@@ -46,7 +44,6 @@ export interface Question {
   bmiMessageUnderweight?: string;
   bmiMessageHealthy?: string;
   bmiMessageOverweight?: string;
-  conditionalContent?: Record<string, ConditionalContentEntry>;
 }
 
 export interface ValidationError {
@@ -58,3 +55,4 @@ export interface ValidationError {
 export interface LumiJSON {
   questions: Question[];
 }
+

@@ -9,7 +9,7 @@ Quy tắc khi chỉnh sửa `lumi_chat_questions.json` (và các bản dịch) q
 | Trường | Sửa được? | Ghi chú |
 |--------|:---------:|---------|
 | `id` | KHÔNG | Đã hardcode trong `LumiQuestionIds`, dùng cho logic mapping (BMI, onboarding state...) |
-| `type` | KHÔNG | Quyết định loại UI: `single-select`, `multi-select`, `number-input`, `info`, `microcopy` |
+| `type` | KHÔNG | Quyết định loại UI: `single-select`, `multi-select`, `number-input`, `microcopy` |
 | `dependsOn` | KHÔNG | Điều khiển thứ tự câu hỏi và luồng hiển thị |
 | `showEvent` | KHÔNG | Tên event analytics — đổi sẽ mất dữ liệu tracking |
 | `contentEvent` | KHÔNG | Tên event analytics |
@@ -26,8 +26,10 @@ Quy tắc khi chỉnh sửa `lumi_chat_questions.json` (và các bản dịch) q
 | `options[].value` | select | Text hiển thị trên option chip |
 | `options[].emoji` | select | Emoji hiển thị bên cạnh option |
 | `options[].microcopy` | select | Phản hồi bot riêng cho từng option |
-| `conditionalContent[].text` | info | Nội dung text trên info card |
-| `conditionalContent[].image` | info | URL ảnh hoặc local drawable key |
+| `options[].microcopyImage` | select | URL ảnh hoặc local drawable key hiển thị kèm microcopy. Bất kỳ option nào cũng có thể thêm |
+| `infoShowEvent` | select có microcopyImage | Event analytics fire khi microcopy có ảnh hiển thị |
+| `infoContentEvent` | select có microcopyImage | Event analytics fire kèm nội dung answer |
+| `infoContentEventParam` | select có microcopyImage | Tên param cho `infoContentEvent` |
 | `errorMessageInvalid` | number-input | Thông báo lỗi khi nhập sai định dạng |
 | `errorMessageRange` | number-input | Thông báo lỗi khi ngoài khoảng. Hỗ trợ placeholder `%1$s`, `%2$s`, `%3$s` |
 | `confirmMessageFormat` | number-input | Tin nhắn xác nhận giá trị. Hỗ trợ placeholder `%1$s`, `%2$s` |
@@ -49,7 +51,6 @@ Quy tắc khi chỉnh sửa `lumi_chat_questions.json` (và các bản dịch) q
 | `availableUnits[].unit` | CAO | Định danh đơn vị dùng trong logic chuyển đổi |
 | `availableUnits[].label` | THẤP | Chỉ là label hiển thị — đổi an toàn |
 | `availableUnits[].ratio` | CAO | Tỷ lệ chuyển đổi sang đơn vị gốc (cm/kg). Sai giá trị = sai BMI/cân nặng |
-| `conditionalContent` keys | CAO | Phải khớp với `options[].key` của câu hỏi `dependsOn` (vd: `"1"`, `"2"`, `"3"` từ `aging_perception`) |
 
 ---
 
@@ -71,8 +72,7 @@ Các câu sau có `id` được hardcode trong `LumiQuestionIds`, `LumiOnboardin
 | `height` | Dùng để tính BMI + map sang `currentHeight` |
 | `current_weight` | Dùng để tính BMI + map sang `currentWeight` |
 | `target_weight` | Dùng để tính BMI + map sang `targetWeight`. Kích hoạt hiển thị kết quả BMI |
-| `aging_perception` | Map sang `beforeReversibleAnswerIndex`, keys liên kết với `reversible_info` |
-| `reversible_info` | Hiển thị info card dựa trên `aging_perception`. Logic trong `showInfoQuestionIfNeeded()` |
+| `aging_perception` | Map sang `beforeReversibleAnswerIndex`. Các option có `microcopyImage` hiển thị ảnh kèm microcopy |
 | `main_goal` | Map sang main goal (`mapMainGoalAnswer`). Kết thúc luồng onboarding → chuyển màn hình |
 
 ### Câu CÓ THỂ XOÁ (chỉ mang tính hiển thị)
@@ -91,7 +91,7 @@ Các câu sau có `id` được hardcode trong `LumiQuestionIds`, `LumiOnboardin
 
 ### Quy tắc THÊM câu hỏi mới
 
-1. **Type hỗ trợ:** `microcopy`, `single-select`, `multi-select`, `number-input`, `info`
+1. **Type hỗ trợ:** `microcopy`, `single-select`, `multi-select`, `number-input`
 
 2. **Trường bắt buộc:**
    - `id` — duy nhất, không trùng câu khác
@@ -123,8 +123,8 @@ Xem implementation tại `LumiViewModel.validateQuestions()`.
 |---|------|-------|-----------|
 | 1 | Danh sách rỗng | `questions` không được rỗng | `"questions": []` |
 | 2 | Trùng `id` | Mỗi câu phải có `id` duy nhất | 2 câu cùng `"id": "age"` |
-| 3 | Thiếu câu bắt buộc | Phải có đủ 13 câu hardcode (xem bảng ở trên) | Thiếu `height` hoặc `main_goal` |
-| 4 | `type` không hợp lệ | Phải là: `single-select`, `multi-select`, `number-input`, `info`, `microcopy` | `"type": "checkbox"` |
+| 3 | Thiếu câu bắt buộc | Phải có đủ 12 câu hardcode (xem bảng ở trên) | Thiếu `height` hoặc `main_goal` |
+| 4 | `type` không hợp lệ | Phải là: `single-select`, `multi-select`, `number-input`, `microcopy` | `"type": "checkbox"` |
 | 5 | `dependsOn` trỏ sai | `dependsOn` phải trỏ tới `id` tồn tại trong danh sách | `"dependsOn": "xyz"` (không có câu nào id = xyz) |
 | 6 | Vòng lặp `dependsOn` | Chuỗi `dependsOn` không được tạo chu trình | `A.dependsOn = B`, `B.dependsOn = A` |
 | 7 | Câu select thiếu options | `single-select` / `multi-select` phải có ít nhất 1 option | `"options": []` hoặc không có trường `options` |
@@ -132,7 +132,7 @@ Xem implementation tại `LumiViewModel.validateQuestions()`.
 | 9 | `ratio = 0` | `availableUnits[].ratio` không được bằng 0 (gây chia cho 0 khi chuyển đổi đơn vị) | `"ratio": 0` |
 | 10 | `hardRangeMin > hardRangeMax` | Giới hạn cứng phải hợp lệ: min ≤ max | `hardRangeMin: 500, hardRangeMax: 100` |
 | 11 | `softRange` ngoài `hardRange` | `softRangeMin` ≥ `hardRangeMin` và `softRangeMax` ≤ `hardRangeMax` | `softRangeMin: 50` nhưng `hardRangeMin: 66` |
-| 12 | `conditionalContent` keys không khớp | Keys trong `reversible_info.conditionalContent` phải khớp với `aging_perception.options[].key` | `aging_perception` có key `"1","2","3"` nhưng `conditionalContent` chỉ có `"1","2"` |
+| 12 | `conditionalContent` keys không khớp | (Backward compat) Nếu câu có cả `options` lẫn `conditionalContent` → keys phải khớp nhau | Câu có option key `"1","2","3"` nhưng `conditionalContent` chỉ có `"1","2"` |
 
 ---
 
@@ -194,13 +194,10 @@ Xem implementation tại `LumiViewModel.validateQuestions()`.
 - Sửa được: `question`, `microcopy`, `options[].value`, `options[].emoji`, `options[].microcopy`
 - Lưu ý: Câu trả lời không map sang onboarding state — chỉ mang tính thông tin
 
-### `aging_perception` (type: single-select)
-- Sửa được: `question`, `options[].value`, `options[].emoji`
-- Cẩn thận: `options[].key` (`"1"`, `"2"`, `"3"`) — phải khớp với keys trong `conditionalContent` của `reversible_info`
-
-### `reversible_info` (type: info)
-- Sửa được: `conditionalContent[].text`, `conditionalContent[].image`
-- Cẩn thận: Keys của `conditionalContent` phải khớp với `options[].key` của `aging_perception`
+### `aging_perception` (type: single-select, có microcopyImage)
+- Sửa được: `question`, `options[].value`, `options[].emoji`, `options[].microcopy`, `options[].microcopyImage`
+- Cẩn thận: Thứ tự options — mapper dùng index (vị trí) để map sang `beforeReversibleAnswerIndex`, không dùng `key`
+- Analytics: `infoShowEvent`, `infoContentEvent`, `infoContentEventParam` — fire khi option có `microcopyImage` được chọn
 
 ### `main_goal` (type: single-select)
 - Sửa được: `question`, `options[].value`, `options[].microcopy`

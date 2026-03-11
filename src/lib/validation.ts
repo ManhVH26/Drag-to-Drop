@@ -133,31 +133,5 @@ export function validateQuestions(questions: Question[]): ValidationError[] {
     }
   }
 
-  // Rule 12: conditionalContent keys mismatch
-  const agingQ = questions.find((q) => q.id === "aging_perception");
-  const reversibleQ = questions.find((q) => q.id === "reversible_info");
-  if (agingQ && reversibleQ && reversibleQ.conditionalContent && agingQ.options) {
-    const optionKeys = new Set(agingQ.options.map((o) => o.key).filter(Boolean));
-    const contentKeys = new Set(Object.keys(reversibleQ.conditionalContent));
-    for (const k of optionKeys) {
-      if (!contentKeys.has(k!)) {
-        errors.push({
-          ruleNumber: 12,
-          questionId: "reversible_info",
-          message: `conditionalContent thieu key "${k}" (tu aging_perception options)`,
-        });
-      }
-    }
-    for (const k of contentKeys) {
-      if (!optionKeys.has(k)) {
-        errors.push({
-          ruleNumber: 12,
-          questionId: "reversible_info",
-          message: `conditionalContent co key "${k}" nhung khong co trong aging_perception options`,
-        });
-      }
-    }
-  }
-
   return errors;
 }

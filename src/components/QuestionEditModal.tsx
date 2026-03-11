@@ -1,8 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Question, Option, AvailableUnit, ConditionalContentEntry } from "@/lib/types";
-import { NON_EDITABLE_FIELDS } from "@/lib/constants";
+import { Question, Option, AvailableUnit } from "@/lib/types";
 
 interface Props {
   question: Question;
@@ -47,32 +46,13 @@ export default function QuestionEditModal({ question, onSave, onClose }: Props) 
     set("availableUnits", (draft.availableUnits || []).filter((_, i) => i !== idx));
   };
 
-  const updateConditionalContent = (
-    key: string,
-    updates: Partial<ConditionalContentEntry>
-  ) => {
-    const cc = { ...(draft.conditionalContent || {}) };
-    cc[key] = { ...cc[key], ...updates };
-    set("conditionalContent", cc);
-  };
-
-  const addConditionalContentKey = () => {
-    const key = prompt("Enter new key:");
-    if (!key) return;
-    const cc = { ...(draft.conditionalContent || {}) };
-    cc[key] = { text: "", image: "" };
-    set("conditionalContent", cc);
-  };
-
-  const removeConditionalContentKey = (key: string) => {
-    const cc = { ...(draft.conditionalContent || {}) };
-    delete cc[key];
-    set("conditionalContent", cc);
-  };
-
   const isSelect = draft.type === "single-select" || draft.type === "multi-select";
   const isNumberInput = draft.type === "number-input";
-  const isInfo = draft.type === "info";
+
+  const lockedFields: (keyof Question)[] = [
+    "id", "type", "dependsOn", "showEvent", "contentEvent", "contentEventParam",
+    "infoShowEvent", "infoContentEvent", "infoContentEventParam",
+  ];
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-start justify-center z-50 overflow-y-auto p-4">
@@ -89,28 +69,26 @@ export default function QuestionEditModal({ question, onSave, onClose }: Props) 
         <div className="p-5 space-y-5 max-h-[70vh] overflow-y-auto">
           {/* Non-editable fields */}
           <div className="grid grid-cols-2 gap-3">
-            {(["id", "type", "dependsOn", "showEvent", "contentEvent", "contentEventParam"] as const).map(
-              (field) => {
-                const val = draft[field as keyof Question];
-                if (val === undefined) return null;
-                return (
-                  <div key={field}>
-                    <label className="block text-xs font-medium text-gray-400 mb-1">
-                      {field} <span className="text-red-300">locked</span>
-                    </label>
-                    <input
-                      value={String(val ?? "")}
-                      disabled
-                      className="w-full px-3 py-2 border rounded bg-gray-50 text-gray-400 text-sm cursor-not-allowed"
-                    />
-                  </div>
-                );
-              }
-            )}
+            {lockedFields.map((field) => {
+              const val = draft[field];
+              if (val === undefined) return null;
+              return (
+                <div key={field}>
+                  <label className="block text-xs font-medium text-gray-400 mb-1">
+                    {field} <span className="text-red-300">locked</span>
+                  </label>
+                  <input
+                    value={String(val ?? "")}
+                    disabled
+                    className="w-full px-3 py-2 border rounded bg-gray-50 text-gray-400 text-sm cursor-not-allowed"
+                  />
+                </div>
+              );
+            })}
           </div>
 
           {/* Question text */}
-          {(draft.type !== "microcopy" && draft.type !== "info") && (
+          {draft.type !== "microcopy" && (
             <Field label="question" value={draft.question || ""} onChange={(v) => set("question", v)} />
           )}
 
@@ -184,6 +162,15 @@ export default function QuestionEditModal({ question, onSave, onClose }: Props) 
                         />
                       </div>
                     </div>
+                    <div>
+                      <label className="block text-xs text-gray-500">microcopyImage</label>
+                      <input
+                        value={opt.microcopyImage || ""}
+                        onChange={(e) => updateOption(i, { microcopyImage: e.target.value || undefined })}
+                        placeholder="e.g. img_ob_reversible"
+                        className="w-full px-2 py-1.5 border rounded text-sm"
+                      />
+                    </div>
                   </div>
                 ))}
               </div>
@@ -251,49 +238,6 @@ export default function QuestionEditModal({ question, onSave, onClose }: Props) 
                   </div>
                 ))}
               </div>
-            </div>
-          )}
-
-          {/* Conditional Content for info type */}
-          {isInfo && draft.conditionalContent && (
-            <div>
-              <div className="flex items-center justify-between mb-2">
-                <label className="text-sm font-semibold text-gray-700">
-                  Conditional Content <span className="text-amber-500">&#x26A0;</span>
-                </label>
-                <button onClick={addConditionalContentKey} className="text-xs px-2 py-1 bg-blue-50 text-blue-600 rounded hover:bg-blue-100">
-                  + Add Key
-                </button>
-              </div>
-              {Object.entries(draft.conditionalContent).map(([key, entry]) => (
-                <div key={key} className="p-3 bg-gray-50 rounded-lg border mb-2">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="font-mono text-sm font-semibold">Key: {key}</span>
-                    <button onClick={() => removeConditionalContentKey(key)} className="text-xs text-red-400 hover:text-red-600">
-                      Remove
-                    </button>
-                  </div>
-                  <div className="space-y-2">
-                    <div>
-                      <label className="block text-xs text-gray-500">text</label>
-                      <textarea
-                        value={entry.text}
-                        onChange={(e) => updateConditionalContent(key, { text: e.target.value })}
-                        rows={2}
-                        className="w-full px-2 py-1.5 border rounded text-sm"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-xs text-gray-500">image</label>
-                      <input
-                        value={entry.image}
-                        onChange={(e) => updateConditionalContent(key, { image: e.target.value })}
-                        className="w-full px-2 py-1.5 border rounded text-sm"
-                      />
-                    </div>
-                  </div>
-                </div>
-              ))}
             </div>
           )}
         </div>

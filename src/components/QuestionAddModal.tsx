@@ -50,8 +50,6 @@ export default function QuestionAddModal({ questions, onAdd, onClose }: Props) {
       newQ.availableUnits = [];
       newQ.hardRangeMin = 0;
       newQ.hardRangeMax = 100;
-    } else if (type === "info") {
-      newQ.conditionalContent = {};
     }
 
     onAdd(newQ, afterIndex);
