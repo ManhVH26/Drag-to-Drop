@@ -23,10 +23,11 @@ Quy tắc khi chỉnh sửa `lumi_chat_questions.json` (và các bản dịch) q
 |--------|------------|-------|
 | `question` | select, number-input | Nội dung câu hỏi hiển thị cho user |
 | `microcopy` (cấp question) | tất cả | Tin nhắn bot phản hồi sau khi user trả lời |
+| `microcopyImage` (cấp question) | tất cả | URL ảnh hoặc local drawable key hiển thị kèm microcopy cấp question. Dùng làm fallback nếu option không có `microcopyImage` riêng |
 | `options[].value` | select | Text hiển thị trên option chip |
 | `options[].emoji` | select | Emoji hiển thị bên cạnh option |
 | `options[].microcopy` | select | Phản hồi bot riêng cho từng option |
-| `options[].microcopyImage` | select | URL ảnh hoặc local drawable key hiển thị kèm microcopy. Bất kỳ option nào cũng có thể thêm |
+| `options[].microcopyImage` | select | URL ảnh hoặc local drawable key hiển thị kèm microcopy. Ưu tiên hơn `microcopyImage` cấp question |
 | `infoShowEvent` | select có microcopyImage | Event analytics fire khi microcopy có ảnh hiển thị |
 | `infoContentEvent` | select có microcopyImage | Event analytics fire kèm nội dung answer |
 | `infoContentEventParam` | select có microcopyImage | Tên param cho `infoContentEvent` |
@@ -132,7 +133,6 @@ Xem implementation tại `LumiViewModel.validateQuestions()`.
 | 9 | `ratio = 0` | `availableUnits[].ratio` không được bằng 0 (gây chia cho 0 khi chuyển đổi đơn vị) | `"ratio": 0` |
 | 10 | `hardRangeMin > hardRangeMax` | Giới hạn cứng phải hợp lệ: min ≤ max | `hardRangeMin: 500, hardRangeMax: 100` |
 | 11 | `softRange` ngoài `hardRange` | `softRangeMin` ≥ `hardRangeMin` và `softRangeMax` ≤ `hardRangeMax` | `softRangeMin: 50` nhưng `hardRangeMin: 66` |
-| 12 | `conditionalContent` keys không khớp | (Backward compat) Nếu câu có cả `options` lẫn `conditionalContent` → keys phải khớp nhau | Câu có option key `"1","2","3"` nhưng `conditionalContent` chỉ có `"1","2"` |
 
 ---
 

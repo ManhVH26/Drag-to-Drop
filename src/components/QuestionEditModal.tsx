@@ -51,7 +51,6 @@ export default function QuestionEditModal({ question, onSave, onClose }: Props) 
 
   const lockedFields: (keyof Question)[] = [
     "id", "type", "dependsOn", "showEvent", "contentEvent", "contentEventParam",
-    "infoShowEvent", "infoContentEvent", "infoContentEventParam",
   ];
 
   return (
@@ -102,6 +101,22 @@ export default function QuestionEditModal({ question, onSave, onClose }: Props) 
               className="w-full px-3 py-2 border rounded text-sm focus:ring-2 focus:ring-blue-300 focus:outline-none"
             />
           </div>
+
+          {/* microcopyImage (question level) */}
+          <Field
+            label="microcopyImage (fallback for options)"
+            value={draft.microcopyImage || ""}
+            onChange={(v) => set("microcopyImage", v || undefined)}
+          />
+
+          {/* Info analytics events (editable for select with microcopyImage) */}
+          {isSelect && (
+            <div className="space-y-3">
+              <Field label="infoShowEvent" value={draft.infoShowEvent || ""} onChange={(v) => set("infoShowEvent", v || undefined)} />
+              <Field label="infoContentEvent" value={draft.infoContentEvent || ""} onChange={(v) => set("infoContentEvent", v || undefined)} />
+              <Field label="infoContentEventParam" value={draft.infoContentEventParam || ""} onChange={(v) => set("infoContentEventParam", v || undefined)} />
+            </div>
+          )}
 
           {/* Options for select types */}
           {isSelect && (

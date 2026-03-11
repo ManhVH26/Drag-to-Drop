@@ -24,6 +24,7 @@ export interface Question {
   dependsOn: string | null;
   question?: string;
   microcopy?: string;
+  microcopyImage?: string;
   showEvent?: string;
   contentEvent?: string;
   contentEventParam?: string;
@@ -31,6 +32,7 @@ export interface Question {
   infoContentEvent?: string;
   infoContentEventParam?: string;
   options?: Option[];
+  conditionalContent?: Record<string, unknown>;
   storageUnit?: string;
   availableUnits?: AvailableUnit[];
   hardRangeMin?: number;
