@@ -39,8 +39,6 @@ export default function SortableQuestionCard({
   const displayText =
     question.type === "microcopy"
       ? question.microcopy
-      : question.type === "info"
-      ? "Info card"
       : question.question;
 
   return (

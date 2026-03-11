@@ -474,45 +474,29 @@
       "contentEvent": "ob_aging_content",
       "contentEventParam": "aging_content_param",
       "dependsOn": "diet_history",
+      "infoShowEvent": "ob_reversible_show",
+      "infoContentEvent": "ob_reversible_content",
+      "infoContentEventParam": "ob_reversible_content_param",
       "options": [
         {
           "value": "Yes - I feel slower, heavier, or weaker than I used to",
           "emoji": "😣",
-          "key": "1"
+          "microcopy": "It's not your fault. It's not aging. It's biology - and it's reversible.\nLet's find out what's really going on.",
+          "microcopyImage": "img_ob_reversible"
         },
         {
           "value": "Sometimes - depends on the day",
           "emoji": "😮‍💨",
-          "key": "2"
+          "microcopy": "Inconsistency is a signal. It's biology - and it's reversible.\nWe'll help you uncover what throws your body off - and stabilize it.",
+          "microcopyImage": "img_ob_reversible"
         },
         {
           "value": "No - I feel my age or younger",
           "emoji": "😌",
-          "key": "3"
+          "microcopy": "That's great - your biology is working with you.\nLet's optimize what you already have and help you stay ahead.",
+          "microcopyImage": "img_ob_reversible"
         }
       ]
-    },
-    {
-      "id": "reversible_info",
-      "type": "info",
-      "showEvent": "ob_reversible_show",
-      "contentEvent": "ob_reversible_content",
-      "contentEventParam": "ob_reversible_content_param",
-      "dependsOn": "aging_perception",
-      "conditionalContent": {
-        "1": {
-          "text": "It's not your fault. It's not aging. It's biology - and it's reversible.\nLet's find out what's really going on.",
-          "image": "img_ob_reversible"
-        },
-        "2": {
-          "text": "Inconsistency is a signal. It's biology - and it's reversible.\nWe'll help you uncover what throws your body off - and stabilize it.",
-          "image": "img_ob_reversible"
-        },
-        "3": {
-          "text": "That's great - your biology is working with you.\nLet's optimize what you already have and help you stay ahead.",
-          "image": "img_ob_reversible"
-        }
-      }
     },
     {
       "id": "main_goal",
@@ -521,7 +505,7 @@
       "showEvent": "ob_main_goal_show",
       "contentEvent": "ob_main_goal_content",
       "contentEventParam": "ob_main_goal_content_param",
-      "dependsOn": "reversible_info",
+      "dependsOn": "aging_perception",
       "options": [
         {
           "value": "Lose Fat",
