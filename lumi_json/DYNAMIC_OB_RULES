@@ -1,0 +1,110 @@
+# Dynamic Onboarding Rules
+
+Quy tắc quản lý thứ tự màn hình onboarding động, được cấu hình qua Firebase Remote Config (`ob_screen_order`).
+
+## Màn hình bắt buộc
+
+Các màn hình này **phải luôn có mặt** trong luồng onboarding. Nếu thiếu bất kỳ màn nào, remote config sẽ bị từ chối và app sẽ fallback về JSON mặc định local.
+
+| Screen ID       | Lý do                                                                  |
+|-----------------|------------------------------------------------------------------------|
+| `lumi`          | Thu thập toàn bộ dữ liệu khảo sát (giới tính, cân nặng, chiều cao, mục tiêu...) dùng cho các API sau |
+| `loading_habit` | Gọi các API quan trọng: `updateOnboardingDataPart1/Part2`, `updateSurvey`, `generateAiPlanGoal`, `getGoalSuggestions`, `loadDefaultWorkoutPlan` |
+| `paywall`       | Xử lý mua subscription và kết thúc luồng onboarding                   |
+
+## Ràng buộc thứ tự
+
+Các quy tắc thứ tự này **phải được tuân thủ**. Nếu vi phạm, remote config sẽ bị từ chối.
+
+| Quy tắc | Lý do |
+|---------|-------|
+| `lumi` phải đứng **trước** `loading_habit` | `loading_habit` gọi API phụ thuộc vào dữ liệu khảo sát thu thập ở `lumi` |
+| `lumi` phải đứng **trước** `goal_plan` | `goal_plan` hiển thị mục tiêu AI tạo ra, cần dữ liệu khảo sát |
+| `lumi` phải đứng **trước** `get_my_plan` | `get_my_plan` hiển thị tóm tắt kế hoạch dựa trên dữ liệu khảo sát |
+| `loading_habit` phải đứng **trước** `goal_plan` | `goal_plan` hiển thị kết quả từ API được gọi ở `loading_habit` |
+| `loading_habit` phải đứng **trước** `get_my_plan` | `get_my_plan` hiển thị kết quả từ API được gọi ở `loading_habit` |
+
+### Thứ tự hợp lệ điển hình
+
+```
+lumi → loading_habit → goal_plan → get_my_plan → paywall
+```
+
+## Màn hình tùy chọn
+
+Các màn hình này có thể tự do thêm, xóa, hoặc sắp xếp lại mà không ràng buộc:
+
+| Screen ID      | Mô tả |
+|----------------|-------|
+| `welcome`      | Màn giới thiệu, thuần UI |
+| `key_aspects`  | Hiển thị các danh mục sức khỏe, thuần UI |
+| `trial_1`      | Giới thiệu dùng thử miễn phí bước 1 |
+| `trial_2`      | Giới thiệu dùng thử miễn phí bước 2 |
+| `trial_3`      | Giới thiệu dùng thử miễn phí bước 3 (cũng gọi `GetMyPlanNext` để lưu `typeUser`) |
+| `generic`      | Màn hình hoàn toàn từ remote config với title/subtitle/image/button tùy chỉnh |
+
+## Màn hình Generic
+
+Màn hình generic được định nghĩa bằng JSON object với `"type": "generic"` và có thể chèn vào bất kỳ vị trí nào:
+
+```json
+{
+  "type": "generic",
+  "id": "unique_screen_id",
+  "title": "Tiêu đề màn hình",
+  "subtitle": "Nội dung phụ",
+  "button": "Tiếp tục",
+  "image_url": "https://example.com/image.png"
+}
+```
+
+- `id` là **bắt buộc** và phải là duy nhất trong toàn bộ danh sách màn hình.
+- Các trường khác là tùy chọn (mặc định chuỗi rỗng nếu không có).
+
+## Ghi đè nội dung màn hình Fixed
+
+Các màn hình fixed có thể ghi đè text/image mặc định thông qua dạng JSON object:
+
+```json
+{
+  "type": "welcome",
+  "image_url": "https://example.com/welcome.png",
+  "title": "Xin chào - Tôi là Lumi",
+  "highlight": "Lumi",
+  "subtitle": "Người bạn đồng hành sức khỏe hàng ngày."
+}
+```
+
+Các trường nội dung có sẵn theo từng loại màn hình:
+
+| Trường         | Dùng bởi                                     |
+|----------------|----------------------------------------------|
+| `image_url`    | welcome, key_aspects, trial_1, trial_2, trial_3 |
+| `title`        | tất cả màn hình fixed                        |
+| `highlight`    | welcome, trial_1, trial_2, trial_3           |
+| `subtitle`     | tất cả màn hình fixed                        |
+| `button`       | key_aspects, trial_1, trial_2, trial_3       |
+| `description`  | trial_3                                      |
+| `box_title`    | key_aspects                                  |
+| `box_subtitle` | key_aspects                                  |
+| `categories`   | key_aspects (mảng `{emoji, label}`)          |
+
+Nếu trường rỗng hoặc thiếu, phần tử UI tương ứng sẽ bị ẩn.
+
+## Validation & Fallback
+
+1. JSON từ remote config được parse qua `OnboardingStep.parseFromRemoteConfig()`.
+2. Kết quả parse được validate qua `OnboardingStep.validateScreenOrder()`.
+3. Nếu validate thất bại (thiếu màn bắt buộc hoặc vi phạm thứ tự), app ghi log lỗi và **fallback về JSON mặc định local** (`ob_screen_order_default_{lang}.json`).
+4. Các file JSON mặc định local được đóng gói trong app và phải luôn thỏa mãn tất cả quy tắc trên.
+
+## Side Effects theo Route Detection
+
+Các side effect được tự động kích hoạt trong `OnboardingScreen.kt` dựa trên route hiện tại, không phụ thuộc thứ tự màn hình:
+
+| Route chứa                   | Intent được gọi  | Hiệu ứng                 |
+|------------------------------|-------------------|---------------------------|
+| `LoadingHabitNavigation`     | `StartSurvey`     | Phát nhạc nền             |
+| `NewPaywallOnboardingNavigation` | `FinishSurvey` | Dừng nhạc nền             |
+
+Các side effect này sẽ được kích hoạt bất kể màn hình xuất hiện ở vị trí nào trong thứ tự.

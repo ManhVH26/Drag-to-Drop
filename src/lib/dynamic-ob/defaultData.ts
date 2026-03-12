@@ -1,0 +1,55 @@
+import { ScreenItem } from "./types";
+
+export const DEFAULT_SCREENS: ScreenItem[] = [
+  {
+    type: "welcome",
+    image_url: "",
+    title: "Hi - I'm Lumi \u2728",
+    highlight: "Lumi",
+    subtitle: "Your daily guardian for wellness.",
+  },
+  {
+    type: "key_aspects",
+    image_url: "",
+    title: "I'll be your daily companion, guiding you to care for 4 key aspects of your health:",
+    box_title: "Core health areas",
+    box_subtitle: "4 keys to feeling great",
+    categories: [
+      { emoji: "\uD83D\uDD25", label: "Workout" },
+      { emoji: "\uD83C\uDF19", label: "Recovery" },
+      { emoji: "\uD83E\uDD57", label: "Nutrition" },
+      { emoji: "\uD83E\uDDD8\u200D\u2642\uFE0F", label: "Mental Health" },
+    ],
+    button: "Let's Start",
+  },
+  "lumi",
+  "loading_habit",
+  "goal_plan",
+  "get_my_plan",
+  {
+    type: "trial_1",
+    image_url: "",
+    subtitle: "Fitangel is free forever",
+    title: "But we'd love for you to try Fitangel Plus for 7 days free too!",
+    highlight: "7 days free",
+    button: "See my FREE offer",
+  },
+  {
+    type: "trial_2",
+    image_url: "",
+    subtitle: "Free to cancel anytime",
+    title: "We'll send reminder \n2 days before your free trial ends",
+    highlight: "2 days before",
+    button: "See my FREE offer",
+  },
+  {
+    type: "trial_3",
+    image_url: "",
+    subtitle: "One-time offer!",
+    title: "50% OFF when you start your free trial now",
+    highlight: "50% OFF",
+    description: "Biggest discount ever-just for you & Lumi",
+    button: "See FREE offer details",
+  },
+  "paywall",
+];
