@@ -35,7 +35,7 @@ export const DEFAULT_SCREENS: ScreenItem[] = [
     button: "See my FREE offer",
   },
   {
-    type: "trial_2",
+    type: "generic_1",
     image_url: "",
     subtitle: "Free to cancel anytime",
     title: "We'll send reminder \n2 days before your free trial ends",
@@ -43,7 +43,7 @@ export const DEFAULT_SCREENS: ScreenItem[] = [
     button: "See my FREE offer",
   },
   {
-    type: "trial_3",
+    type: "generic_2",
     image_url: "",
     subtitle: "One-time offer!",
     title: "50% OFF when you start your free trial now",

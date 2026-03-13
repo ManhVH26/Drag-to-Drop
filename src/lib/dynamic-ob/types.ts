@@ -6,11 +6,11 @@ export interface Category {
 export interface ScreenObject {
   type: string;
   id?: string;
+  style?: string;
   image_url?: string;
   title?: string;
   highlight?: string;
   subtitle?: string;
-  bottom_text?: string;
   button?: string;
   description?: string;
   box_title?: string;
