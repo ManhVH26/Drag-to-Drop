@@ -19,8 +19,12 @@ export default function ScreenEditModal({ screen, screenType, onSave, onClose }:
     setDraft((d) => ({ ...d, [key]: val }));
   };
 
-  const fields = SCREEN_FIELDS[screenType] || [];
-  const hasCategories = fields.includes("categories");
+  const allFields = SCREEN_FIELDS[screenType] || [];
+  const hasCategories = allFields.includes("categories");
+  // For generic, hide description if style is not generic_2
+  const fields = screenType === "generic"
+    ? allFields.filter((f) => f !== "description" || draft.style === "generic_2")
+    : allFields;
   const textFields = fields.filter((f) => f !== "categories");
 
   const updateCategory = (idx: number, updates: Partial<Category>) => {
@@ -29,26 +33,14 @@ export default function ScreenEditModal({ screen, screenType, onSave, onClose }:
     setDraft((d) => ({ ...d, categories: cats }));
   };
 
-  const addCategory = () => {
-    setDraft((d) => ({
-      ...d,
-      categories: [...(d.categories || []), { emoji: "", label: "" }],
-    }));
-  };
-
-  const removeCategory = (idx: number) => {
-    setDraft((d) => ({
-      ...d,
-      categories: (d.categories || []).filter((_, i) => i !== idx),
-    }));
-  };
 
   const handleSave = () => {
     // Clean empty string fields
     const cleaned: ScreenObject = { type: draft.type };
     if (draft.id) cleaned.id = draft.id;
+    if (draft.style) cleaned.style = draft.style;
     for (const field of textFields) {
-      if (field === "id") continue;
+      if (field === "id" || field === "style") continue;
       const val = (draft as unknown as Record<string, unknown>)[field];
       if (val !== undefined && val !== "") {
         (cleaned as unknown as Record<string, unknown>)[field] = val;
@@ -98,7 +90,16 @@ export default function ScreenEditModal({ screen, screenType, onSave, onClose }:
                   <span className="text-red-500 ml-1">*</span>
                 )}
               </label>
-              {field === "title" || field === "subtitle" || field === "description" ? (
+              {field === "style" ? (
+                <select
+                  value={(draft.style as string) || "generic_1"}
+                  onChange={(e) => set(field, e.target.value)}
+                  className="w-full px-3 py-2 border rounded text-sm focus:ring-2 focus:ring-blue-300 focus:outline-none"
+                >
+                  <option value="generic_1">generic_1 (default)</option>
+                  <option value="generic_2">generic_2</option>
+                </select>
+              ) : field === "title" || field === "subtitle" || field === "description" ? (
                 <textarea
                   value={((draft as unknown as Record<string, unknown>)[field] as string) || ""}
                   onChange={(e) => set(field, e.target.value)}
@@ -118,15 +119,7 @@ export default function ScreenEditModal({ screen, screenType, onSave, onClose }:
           {/* Categories (key_aspects) */}
           {hasCategories && (
             <div>
-              <div className="flex items-center justify-between mb-2">
-                <label className="text-sm font-semibold text-gray-700">Categories</label>
-                <button
-                  onClick={addCategory}
-                  className="text-xs px-2 py-1 bg-blue-50 text-blue-600 rounded hover:bg-blue-100"
-                >
-                  + Add Category
-                </button>
-              </div>
+              <label className="text-sm font-semibold text-gray-700 mb-2 block">Categories</label>
               <div className="space-y-2">
                 {(draft.categories || []).map((cat, i) => (
                   <div key={i} className="flex gap-2 items-end">
@@ -146,12 +139,6 @@ export default function ScreenEditModal({ screen, screenType, onSave, onClose }:
                         className="w-full px-2 py-1.5 border rounded text-sm"
                       />
                     </div>
-                    <button
-                      onClick={() => removeCategory(i)}
-                      className="text-red-400 hover:text-red-600 pb-1.5"
-                    >
-                      &times;
-                    </button>
                   </div>
                 ))}
               </div>

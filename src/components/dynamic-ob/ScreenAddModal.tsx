@@ -34,7 +34,7 @@ export default function ScreenAddModal({ screens, onAdd, onClose }: Props) {
     if (useObject || isGeneric) {
       item = { type };
       if (isGeneric) {
-        item = { type, id, title: "", subtitle: "", button: "" };
+        item = { type, id, style: "generic_1", title: "", subtitle: "", button: "" };
       }
     } else {
       // String-only screens (fixed types without content override)

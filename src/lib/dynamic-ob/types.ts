@@ -6,6 +6,7 @@ export interface Category {
 export interface ScreenObject {
   type: string;
   id?: string;
+  style?: string;
   image_url?: string;
   title?: string;
   highlight?: string;

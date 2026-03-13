@@ -41,9 +41,9 @@ export const SCREEN_TYPE_COLORS: Record<string, string> = {
 // Fields available per screen type for content override
 export const SCREEN_FIELDS: Record<string, string[]> = {
   welcome: ["image_url", "title", "highlight", "subtitle"],
-  key_aspects: ["image_url", "title", "subtitle", "button", "box_title", "box_subtitle", "categories"],
+  key_aspects: ["image_url", "title", "button", "box_title", "box_subtitle", "categories"],
   trial_1: ["image_url", "title", "highlight", "subtitle", "button"],
   trial_2: ["image_url", "title", "highlight", "subtitle", "button"],
   trial_3: ["image_url", "title", "highlight", "subtitle", "button", "description"],
-  generic: ["id", "title", "subtitle", "button", "image_url"],
+  generic: ["id", "style", "title", "subtitle", "highlight", "button", "image_url", "description"],
 };
