@@ -17,8 +17,8 @@ export const FIXED_SCREEN_TYPES = [
   "goal_plan",
   "get_my_plan",
   "trial_1",
-  "generic_1",
-  "generic_2",
+  "trial_2",
+  "trial_3",
   "paywall",
 ] as const;
 
@@ -32,8 +32,8 @@ export const SCREEN_TYPE_COLORS: Record<string, string> = {
   goal_plan: "bg-green-100 text-green-700",
   get_my_plan: "bg-emerald-100 text-emerald-700",
   trial_1: "bg-purple-100 text-purple-700",
-  generic_1: "bg-purple-100 text-purple-700",
-  generic_2: "bg-purple-100 text-purple-700",
+  trial_2: "bg-purple-100 text-purple-700",
+  trial_3: "bg-purple-100 text-purple-700",
   paywall: "bg-red-100 text-red-700",
   generic: "bg-gray-200 text-gray-700",
 };
@@ -43,7 +43,7 @@ export const SCREEN_FIELDS: Record<string, string[]> = {
   welcome: ["image_url", "title", "highlight", "subtitle"],
   key_aspects: ["image_url", "title", "button", "box_title", "box_subtitle", "categories"],
   trial_1: ["image_url", "title", "highlight", "subtitle", "button"],
-  generic_1: ["image_url", "title", "highlight", "subtitle", "button"],
-  generic_2: ["image_url", "title", "highlight", "subtitle", "button", "description"],
+  trial_2: ["image_url", "title", "highlight", "subtitle", "button"],
+  trial_3: ["image_url", "title", "highlight", "subtitle", "button", "description"],
   generic: ["id", "style", "title", "subtitle", "highlight", "button", "image_url", "description"],
 };
