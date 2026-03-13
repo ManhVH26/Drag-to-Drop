@@ -45,5 +45,5 @@ export const SCREEN_FIELDS: Record<string, string[]> = {
   trial_1: ["image_url", "title", "highlight", "subtitle", "button"],
   trial_2: ["image_url", "title", "highlight", "subtitle", "button"],
   trial_3: ["image_url", "title", "highlight", "subtitle", "button", "description"],
-  generic: ["id", "title", "subtitle", "button", "image_url"],
+  generic: ["id", "title", "subtitle", "bottom_text", "button", "image_url"],
 };

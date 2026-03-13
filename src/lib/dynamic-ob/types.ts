@@ -10,6 +10,7 @@ export interface ScreenObject {
   title?: string;
   highlight?: string;
   subtitle?: string;
+  bottom_text?: string;
   button?: string;
   description?: string;
   box_title?: string;

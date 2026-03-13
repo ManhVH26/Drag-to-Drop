@@ -53,13 +53,22 @@ Màn hình generic được định nghĩa bằng JSON object với `"type": "ge
   "id": "unique_screen_id",
   "title": "Tiêu đề màn hình",
   "subtitle": "Nội dung phụ",
+  "bottom_text": "Văn bản hiển thị ở cuối màn hình",
   "button": "Tiếp tục",
   "image_url": "https://example.com/image.png"
 }
 ```
 
-- `id` là **bắt buộc** và phải là duy nhất trong toàn bộ danh sách màn hình.
-- Các trường khác là tùy chọn (mặc định chuỗi rỗng nếu không có).
+| Trường        | Bắt buộc | Mô tả                                      |
+|---------------|----------|---------------------------------------------|
+| `id`          | Có       | ID duy nhất trong toàn bộ danh sách màn hình |
+| `title`       | Không    | Tiêu đề màn hình                            |
+| `subtitle`    | Không    | Nội dung phụ bên dưới tiêu đề               |
+| `bottom_text` | Không    | Văn bản hiển thị ở cuối màn hình            |
+| `button`      | Không    | Text nút bấm                                |
+| `image_url`   | Không    | URL hình ảnh                                 |
+
+- Các trường không bắt buộc mặc định là chuỗi rỗng nếu không có.
 
 ## Ghi đè nội dung màn hình Fixed
 
@@ -107,4 +116,4 @@ Các side effect được tự động kích hoạt trong `OnboardingScreen.kt` 
 | `LoadingHabitNavigation`     | `StartSurvey`     | Phát nhạc nền             |
 | `NewPaywallOnboardingNavigation` | `FinishSurvey` | Dừng nhạc nền             |
 
-Các side effect này sẽ được kích hoạt bất kể màn hình xuất hiện ở vị trí nào trong thứ tự.
+Các side effect này sẽ được kích hoạt bất kể màn hình xuất hiện ở vị trí nào trong thứ tự.  

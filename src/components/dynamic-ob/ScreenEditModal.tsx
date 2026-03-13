@@ -29,19 +29,6 @@ export default function ScreenEditModal({ screen, screenType, onSave, onClose }:
     setDraft((d) => ({ ...d, categories: cats }));
   };
 
-  const addCategory = () => {
-    setDraft((d) => ({
-      ...d,
-      categories: [...(d.categories || []), { emoji: "", label: "" }],
-    }));
-  };
-
-  const removeCategory = (idx: number) => {
-    setDraft((d) => ({
-      ...d,
-      categories: (d.categories || []).filter((_, i) => i !== idx),
-    }));
-  };
 
   const handleSave = () => {
     // Clean empty string fields
@@ -98,7 +85,7 @@ export default function ScreenEditModal({ screen, screenType, onSave, onClose }:
                   <span className="text-red-500 ml-1">*</span>
                 )}
               </label>
-              {field === "title" || field === "subtitle" || field === "description" ? (
+              {field === "title" || field === "subtitle" || field === "bottom_text" || field === "description" ? (
                 <textarea
                   value={((draft as unknown as Record<string, unknown>)[field] as string) || ""}
                   onChange={(e) => set(field, e.target.value)}
@@ -118,15 +105,7 @@ export default function ScreenEditModal({ screen, screenType, onSave, onClose }:
           {/* Categories (key_aspects) */}
           {hasCategories && (
             <div>
-              <div className="flex items-center justify-between mb-2">
-                <label className="text-sm font-semibold text-gray-700">Categories</label>
-                <button
-                  onClick={addCategory}
-                  className="text-xs px-2 py-1 bg-blue-50 text-blue-600 rounded hover:bg-blue-100"
-                >
-                  + Add Category
-                </button>
-              </div>
+              <label className="text-sm font-semibold text-gray-700 mb-2 block">Categories</label>
               <div className="space-y-2">
                 {(draft.categories || []).map((cat, i) => (
                   <div key={i} className="flex gap-2 items-end">
@@ -146,12 +125,6 @@ export default function ScreenEditModal({ screen, screenType, onSave, onClose }:
                         className="w-full px-2 py-1.5 border rounded text-sm"
                       />
                     </div>
-                    <button
-                      onClick={() => removeCategory(i)}
-                      className="text-red-400 hover:text-red-600 pb-1.5"
-                    >
-                      &times;
-                    </button>
                   </div>
                 ))}
               </div>
