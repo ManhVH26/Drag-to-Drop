@@ -31,6 +31,15 @@ export function validateScreens(screens: ScreenItem[]): OBValidationError[] {
     }
   }
 
+  // Rule 2b: "welcome" must be at position 0
+  if (types.includes("welcome") && types[0] !== "welcome") {
+    errors.push({
+      ruleNumber: 2,
+      screenId: "welcome",
+      message: `"welcome" phai dung o vi tri dau tien (vi tri 0)`,
+    });
+  }
+
   // Rule 3: Order constraints
   for (const [before, after] of ORDER_CONSTRAINTS) {
     const beforeIdx = types.indexOf(before);

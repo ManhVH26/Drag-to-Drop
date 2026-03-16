@@ -8,6 +8,7 @@ Các màn hình này **phải luôn có mặt** trong luồng onboarding. Nếu 
 
 | Screen ID       | Lý do                                                                  |
 |-----------------|------------------------------------------------------------------------|
+| `welcome`       | `NavHost` yêu cầu phải có `startDestination` cố định tại thời điểm compose. `WelcomeDestination` được hardcode làm `startDestination`, nên nếu thiếu màn này, `navigateNext("welcome")` sẽ không tìm thấy "welcome" trong `screenOrder` → trả về `null` → gọi `onFinished()` → **bỏ qua toàn bộ onboarding và vào Home** |
 | `lumi`          | Thu thập toàn bộ dữ liệu khảo sát (giới tính, cân nặng, chiều cao, mục tiêu...) dùng cho các API sau |
 | `loading_habit` | Gọi các API quan trọng: `updateOnboardingDataPart1/Part2`, `updateSurvey`, `generateAiPlanGoal`, `getGoalSuggestions`, `loadDefaultWorkoutPlan` |
 | `paywall`       | Xử lý mua subscription và kết thúc luồng onboarding                   |
@@ -18,6 +19,7 @@ Các quy tắc thứ tự này **phải được tuân thủ**. Nếu vi phạm,
 
 | Quy tắc | Lý do |
 |---------|-------|
+| `welcome` phải đứng **đầu tiên** (vị trí số 0) | `NavHost` hardcode `startDestination = WelcomeDestination`. Nếu Welcome không đứng đầu, `NavHost` vẫn hiện Welcome trước → gọi `navigateNext("welcome")` → nhảy đến step sau Welcome trong `screenOrder`, bỏ qua các màn đứng trước nó |
 | `lumi` phải đứng **trước** `loading_habit` | `loading_habit` gọi API phụ thuộc vào dữ liệu khảo sát thu thập ở `lumi` |
 | `lumi` phải đứng **trước** `goal_plan` | `goal_plan` hiển thị mục tiêu AI tạo ra, cần dữ liệu khảo sát |
 | `lumi` phải đứng **trước** `get_my_plan` | `get_my_plan` hiển thị tóm tắt kế hoạch dựa trên dữ liệu khảo sát |
@@ -27,7 +29,7 @@ Các quy tắc thứ tự này **phải được tuân thủ**. Nếu vi phạm,
 ### Thứ tự hợp lệ điển hình
 
 ```
-lumi → loading_habit → goal_plan → get_my_plan → paywall
+welcome → ... → lumi → loading_habit → goal_plan → get_my_plan → paywall
 ```
 
 ## Màn hình tùy chọn
@@ -36,7 +38,6 @@ Các màn hình này có thể tự do thêm, xóa, hoặc sắp xếp lại mà
 
 | Screen ID      | Mô tả |
 |----------------|-------|
-| `welcome`      | Màn giới thiệu, thuần UI |
 | `key_aspects`  | Hiển thị các danh mục sức khỏe, thuần UI |
 | `trial_1`      | Giới thiệu dùng thử miễn phí bước 1 |
 | `trial_2`      | Giới thiệu dùng thử miễn phí bước 2 |
