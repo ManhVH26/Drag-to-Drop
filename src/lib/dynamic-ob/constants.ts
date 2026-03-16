@@ -1,4 +1,4 @@
-export const REQUIRED_SCREENS = ["lumi", "loading_habit", "paywall"] as const;
+export const REQUIRED_SCREENS = ["welcome", "lumi", "loading_habit", "paywall"] as const;
 
 // [A, B] means A must come before B
 export const ORDER_CONSTRAINTS: [string, string][] = [
