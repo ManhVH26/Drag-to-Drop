@@ -50,7 +50,7 @@ Màn hình generic được định nghĩa bằng JSON object với `"type": "ge
 
 ### Style `generic_1` (mặc định) — giống WelcomeTrial2Screen
 
-Bố cục: subtitle (xám) → title+highlight (gradient) → image → button
+Bố cục: title (xám) → subtitle+highlight (gradient) → image → button
 
 ```json
 {
@@ -58,8 +58,8 @@ Bố cục: subtitle (xám) → title+highlight (gradient) → image → button
   "id": "unique_screen_id",
   "style": "generic_1",
   "title": "Tiêu đề chính",
-  "subtitle": "Nội dung phụ phía trên title",
-  "highlight": "phần text tô màu gradient trong title",
+  "subtitle": "Mô tả phụ có highlight gradient",
+  "highlight": "phần text tô màu gradient trong subtitle",
   "button": "Tiếp tục",
   "image_url": "https://example.com/image.png"
 }
@@ -67,7 +67,7 @@ Bố cục: subtitle (xám) → title+highlight (gradient) → image → button
 
 ### Style `generic_2` — giống WelcomeTrial3Screen
 
-Bố cục: subtitle (cam) → title+highlight (gradient) → image → description → button
+Bố cục: title (cam) → subtitle+highlight (gradient) → image → description → button
 
 ```json
 {
@@ -75,8 +75,8 @@ Bố cục: subtitle (cam) → title+highlight (gradient) → image → descript
   "id": "unique_screen_id",
   "style": "generic_2",
   "title": "Tiêu đề chính",
-  "subtitle": "Nội dung phụ phía trên title (màu cam)",
-  "highlight": "phần text tô màu gradient trong title",
+  "subtitle": "Mô tả phụ có highlight gradient",
+  "highlight": "phần text tô màu gradient trong subtitle",
   "description": "Mô tả dài hiển thị phía dưới hình ảnh",
   "button": "Tiếp tục",
   "image_url": "https://example.com/image.png"
@@ -89,9 +89,9 @@ Bố cục: subtitle (cam) → title+highlight (gradient) → image → descript
 |---------------|----------|-------------|--------------------------------------------------------|
 | `id`          | Có       | cả hai      | ID duy nhất trong toàn bộ danh sách màn hình           |
 | `style`       | Không    | —           | `"generic_1"` (mặc định) hoặc `"generic_2"`               |
-| `title`       | Không    | cả hai      | Tiêu đề chính (hỗ trợ highlight)                      |
-| `subtitle`    | Không    | cả hai      | Text phụ phía trên title (generic_1: xám, generic_2: cam) |
-| `highlight`   | Không    | cả hai      | Phần text được tô gradient trong title                 |
+| `title`       | Không    | cả hai      | Tiêu đề chính, hiển thị trên cùng (generic_1: xám, generic_2: cam) |
+| `subtitle`    | Không    | cả hai      | Mô tả phụ phía dưới title (hỗ trợ highlight)          |
+| `highlight`   | Không    | cả hai      | Phần text được tô gradient trong subtitle. **Nếu `highlight` rỗng hoặc không tồn tại trong `subtitle` → subtitle vẫn hiển thị nhưng không có highlight** |
 | `description` | Không    | generic_2     | Mô tả hiển thị phía dưới hình ảnh (chỉ generic_2)      |
 | `button`      | Không    | cả hai      | Text nút bấm                                          |
 | `image_url`   | Không    | cả hai      | URL hình ảnh                                           |
@@ -180,9 +180,9 @@ Các màn hình này **không hỗ trợ ghi đè nội dung** từ remote confi
 |-------------|------------------------------------------------|
 | `id`        | **(bắt buộc)** ID duy nhất                    |
 | `style`     | `"generic_1"` (mặc định)                        |
-| `title`     | Tiêu đề chính (hỗ trợ highlight)              |
-| `subtitle`  | Text phụ phía trên title (màu xám)            |
-| `highlight` | Phần text được tô gradient trong title         |
+| `title`     | Tiêu đề chính, hiển thị trên cùng (màu xám)   |
+| `subtitle`  | Mô tả phụ phía dưới title (hỗ trợ highlight)  |
+| `highlight` | Phần text được tô gradient trong subtitle. Nếu rỗng hoặc không tồn tại trong subtitle → subtitle vẫn hiển thị nhưng không có highlight |
 | `button`    | Text nút bấm                                  |
 | `image_url` | Hình ảnh chính (200x303dp)                     |
 
@@ -192,9 +192,9 @@ Các màn hình này **không hỗ trợ ghi đè nội dung** từ remote confi
 |---------------|------------------------------------------------|
 | `id`          | **(bắt buộc)** ID duy nhất                    |
 | `style`       | `"generic_2"`                                    |
-| `title`       | Tiêu đề chính (hỗ trợ highlight)              |
-| `subtitle`    | Text phụ phía trên title (màu cam #FF9512)     |
-| `highlight`   | Phần text được tô gradient trong title         |
+| `title`       | Tiêu đề chính, hiển thị trên cùng (màu cam #FF9512) |
+| `subtitle`    | Mô tả phụ phía dưới title (hỗ trợ highlight)  |
+| `highlight`   | Phần text được tô gradient trong subtitle. Nếu rỗng hoặc không tồn tại trong subtitle → subtitle vẫn hiển thị nhưng không có highlight |
 | `description` | Mô tả hiển thị phía dưới hình ảnh             |
 | `button`      | Text nút bấm                                  |
 | `image_url`   | Hình ảnh chính (200x303dp)                     |
