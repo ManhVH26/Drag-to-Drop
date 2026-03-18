@@ -25,6 +25,7 @@ Các quy tắc thứ tự này **phải được tuân thủ**. Nếu vi phạm,
 | `lumi` phải đứng **trước** `get_my_plan` | `get_my_plan` hiển thị tóm tắt kế hoạch dựa trên dữ liệu khảo sát |
 | `loading_habit` phải đứng **trước** `goal_plan` | `goal_plan` hiển thị kết quả từ API được gọi ở `loading_habit` |
 | `loading_habit` phải đứng **trước** `get_my_plan` | `get_my_plan` hiển thị kết quả từ API được gọi ở `loading_habit` |
+| `paywall` phải đứng **cuối cùng** (vị trí cuối) | `paywall` xử lý mua subscription và gọi `onFinished()` để kết thúc luồng onboarding. Nếu không đứng cuối, các màn hình sau paywall sẽ không bao giờ được hiển thị vì luồng đã kết thúc |
 
 ### Thứ tự hợp lệ điển hình
 
