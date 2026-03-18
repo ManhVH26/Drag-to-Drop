@@ -40,15 +40,6 @@ export function validateScreens(screens: ScreenItem[]): OBValidationError[] {
     });
   }
 
-  // Rule 2c: "paywall" must be at last position
-  if (types.includes("paywall") && types[types.length - 1] !== "paywall") {
-    errors.push({
-      ruleNumber: 2,
-      screenId: "paywall",
-      message: `"paywall" phai dung o vi tri cuoi cung`,
-    });
-  }
-
   // Rule 3: Order constraints
   for (const [before, after] of ORDER_CONSTRAINTS) {
     const beforeIdx = types.indexOf(before);
